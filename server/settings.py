@@ -143,5 +143,5 @@ REST_FRAMEWORK = {
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-LOGIN_REDIRECT_URL = 'http://localhost/'
+LOGIN_REDIRECT_URL = 'http://localhost/projects/'
 LOGOUT_REDIRECT_URL = 'http://localhost/accounts/login/'
