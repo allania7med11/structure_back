@@ -3,20 +3,23 @@ from rest_framework import serializers
 from . import models as mds
 from .models import Project
 from django.db import models
+from . import models as mds
+from .infs import cst
 
 
-def fSupportSerializer(queryset=None):
+def fSerializer(name,queryset=None):
+    model= cst.models[name]
     if queryset==None:
         data={
-            "Meta":type("Meta", (object,),{"model": mds.Support,"fields" : ('url', 'id','project','name', 'UX', 'UZ','RY')   }) 
+            "Meta":type("Meta", (object,),{"model": model["model"],"fields" : ('url', 'id','project',*model["fields"])   }) 
         } 
     else:
         data={
             "project":serializers.HyperlinkedRelatedField(view_name='project-detail',queryset=queryset),
-            "Meta":type("Meta", (object,),{"model": mds.Support,"fields" : ('url', 'id','project','name', 'UX', 'UZ','RY')   }),
+            "Meta":type("Meta", (object,),{"model": model["model"],"fields" : ('url', 'id','project',*model["fields"])   }),
         }         
-    SupportSerializer=type("SupportSerializer",(serializers.HyperlinkedModelSerializer,),data) 
-    return SupportSerializer
+    return type(model["name"]+"Serializer",(serializers.HyperlinkedModelSerializer,),data)
+    
 def fProjectSerializer(action=None):
     if action==None:
         data={
@@ -26,18 +29,14 @@ def fProjectSerializer(action=None):
     else:
         data={
             "user" : serializers.ReadOnlyField(source='user.username'),
-            "supports" : fSupportSerializer()(many=True, read_only=True),
-            "Meta":type("Meta", (object,),{"model": mds.Project,"fields" : ('url', 'id', 'name', 'user','auth','supports')   }),
+            "nodes" : fSerializer("nodes")(many=True, read_only=True),
+            "supports" : fSerializer("supports")(many=True, read_only=True),
+            "Meta":type("Meta", (object,),{"model": mds.Project,"fields" : ('url', 'id', 'name', 'user','auth',"nodes",'supports')   }),
         }         
     ProjectSerializer=type("ProjectSerializer",(serializers.HyperlinkedModelSerializer,),data) 
     return ProjectSerializer
           
-class ProjectSerializer(serializers.HyperlinkedModelSerializer):
-    user = serializers.ReadOnlyField(source='user.username')
-    supports = fSupportSerializer()(many=True, read_only=True)
-    class Meta:
-        model = mds.Project
-        fields = ('url', 'id', 'name', 'user','auth','supports')
+
 
  
     

@@ -4,7 +4,8 @@ from . import views
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
 router.register(r'projects', views.ProjectViewSet,base_name='project')
-router.register(r'supports', views.SupportViewSet,base_name='support')
+router.register(r'nodes', views.fViewSet('nodes'),base_name='node')
+router.register(r'supports', views.fViewSet('supports'),base_name='support')
 router.register(r'users', views.UserViewSet,base_name='user')
 
 # The API URLs are now determined automatically by the router.

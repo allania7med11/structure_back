@@ -5,8 +5,9 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import UpdateView
-
+from django.http import HttpResponse
 from .forms import SignUpForm, UserInformationUpdateForm
+
 
 
 def signup(request):
