@@ -4,8 +4,9 @@ from django.contrib.postgres.fields import ArrayField, JSONField
 from django.contrib.auth.models import User
 
 class Project(models.Model):
+    modified_date = models.DateTimeField(auto_now=True)
     name = models.CharField(max_length=200)
-    user = models.ForeignKey(User, on_delete=models.CASCADE,default=1,related_name='projects')
+    user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='projects')
     auth = models.CharField(max_length=10,default="private",choices=[("private", "private"),("public", "public"),])
     class Meta:
         unique_together = (("name","user"),)
@@ -14,6 +15,7 @@ class Project(models.Model):
         return y
 
 class Support(models.Model):
+    modified_date = models.DateTimeField(auto_now=True)
     project =models.ForeignKey(Project,on_delete=models.CASCADE,related_name='supports')
     name= models.CharField(max_length=200)
     UX = models.BooleanField()
@@ -33,6 +35,7 @@ def df_ch3(): return ["0" for i in range(3)]
 def df_chm2(): return ["0;0" for i in range(2)]
 def df_chm3(): return ["0;0" for i in range(3)]
 class Node(models.Model):
+    modified_date = models.DateTimeField(auto_now=True)
     project =models.ForeignKey(Project,on_delete=models.CASCADE,related_name='nodes')
     Support = models.ForeignKey(Support,related_name='nodes',on_delete=models.SET_DEFAULT,default=1 )
     name = models.PositiveIntegerField()
@@ -48,6 +51,7 @@ class Node(models.Model):
         return str(self.name)
 
 class Point_Load(models.Model):
+    modified_date = models.DateTimeField(auto_now=True)
     project = models.ForeignKey(
         Project, on_delete=models.CASCADE, related_name='pls')
     name = models.CharField(max_length=200)
@@ -64,6 +68,7 @@ class Point_Load(models.Model):
         return y
 
 class Release(models.Model):
+    modified_date = models.DateTimeField(auto_now=True)
     project = models.ForeignKey(
         Project, on_delete=models.CASCADE, related_name='releases')
     name = models.CharField(max_length=200)
@@ -82,6 +87,7 @@ class Release(models.Model):
         return y
 
 class Material(models.Model):
+    modified_date = models.DateTimeField(auto_now=True)
     project = models.ForeignKey(
         Project, on_delete=models.CASCADE, related_name='materials')
     name = models.CharField(max_length=200)
@@ -96,6 +102,7 @@ class Material(models.Model):
         return y
 
 class Section(models.Model):
+    modified_date = models.DateTimeField(auto_now=True)
     project = models.ForeignKey(
         Project, on_delete=models.CASCADE, related_name='sections')
     name = models.CharField(max_length=200)
@@ -116,6 +123,7 @@ class Section(models.Model):
         return y
 
 class Bar(models.Model):
+    modified_date = models.DateTimeField(auto_now=True)
     project =models.ForeignKey(Project,on_delete=models.CASCADE,related_name='bars')
     name = models.PositiveIntegerField()
     N1= models.ForeignKey(Node,related_name='N1', on_delete=models.CASCADE)
@@ -147,6 +155,7 @@ class Bar(models.Model):
         return y
 
 class Distributed_Load(models.Model):
+    modified_date = models.DateTimeField(auto_now=True)
     project = models.ForeignKey(
         Project, on_delete=models.CASCADE, related_name='dls')
     name = models.CharField(max_length=200)

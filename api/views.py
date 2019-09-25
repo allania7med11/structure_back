@@ -23,7 +23,7 @@ def fViewSet(name):
         self.filterset_class=flts.fFilter(name,queryset=queryset)
         return srls.fSerializer(name,queryset=queryset)
     data={
-        "permission_classes" : (permissions.IsAuthenticated, ),
+        "permission_classes" : (permissions.IsAuthenticated,IsProject ),
         "filter_backends" : [DjangoFilterBackend,filters.OrderingFilter],
         "filterset_class":flts.fFilter(name),
         "ordering_fields" : ['project'],
@@ -36,7 +36,7 @@ def fViewSet(name):
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = mds.Project.objects.all()
     serializer_class = srls.fProjectSerializer()
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsUser )
     filter_backends = [DjangoFilterBackend,filters.OrderingFilter]
     filterset_fields = ['auth']
     ordering_fields = ['auth']

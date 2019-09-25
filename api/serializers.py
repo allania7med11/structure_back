@@ -11,12 +11,12 @@ def fSerializer(name,queryset=None):
     model= cst.models[name]
     if queryset==None:
         data={
-            "Meta":type("Meta", (object,),{"model": model["model"],"fields" : ('url', 'id','project',*model["fields"])   }) 
+            "Meta":type("Meta", (object,),{"model": model["model"],"fields" : ('url', 'id','project','modified_date',*model["fields"])   }) 
         } 
     else:
         data={
             "project":serializers.HyperlinkedRelatedField(view_name='project-detail',queryset=queryset),
-            "Meta":type("Meta", (object,),{"model": model["model"],"fields" : ('url', 'id','project',*model["fields"])   }),
+            "Meta":type("Meta", (object,),{"model": model["model"],"fields" : ('url', 'id','project','modified_date',*model["fields"])   }),
         }         
     return type(model["name"]+"Serializer",(serializers.HyperlinkedModelSerializer,),data)
     
@@ -24,7 +24,7 @@ def fProjectSerializer(action=None):
     if action==None:
         data={
             "user" : serializers.ReadOnlyField(source='user.username'),
-            "Meta":type("Meta", (object,),{"model": mds.Project,"fields" : ('url', 'id', 'name', 'user','auth')  }) 
+            "Meta":type("Meta", (object,),{"model": mds.Project,"fields" : ('url', 'id','modified_date','name', 'user','auth')  }) 
         } 
     else:
         data={
