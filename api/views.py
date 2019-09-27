@@ -12,7 +12,22 @@ from django.contrib.auth.models import User
 from .models import Project
 from .infs import cst
 from . import models as mds      
-       
+from rest_framework.decorators import action
+from rest_framework.parsers import JSONParser
+
+@action(detail=True, methods=['put'])
+def apply(self, request, pk=None):
+    data = JSONParser().parse(request)
+    serializer = self.serializerApply(self.get_object(), data=data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=400) 
+         
+""" @apply.mapping.get
+def retrieve_apply(self, request, pk=None):
+    return Response({"message":"hi"}) """
+
 def fViewSet(name):
     model= cst.models[name]
     def get_queryset(self):
@@ -21,6 +36,8 @@ def fViewSet(name):
     def get_serializer_class(self):
         queryset = mds.Project.objects.filter(user=self.request.user)
         self.filterset_class=flts.fFilter(name,queryset=queryset)
+        if self.action=="apply":
+            return self.serializerApply   
         return srls.fSerializer(name,user=self.request.user)
     data={
         "permission_classes" : (permissions.IsAuthenticated,IsProject ),
@@ -31,11 +48,17 @@ def fViewSet(name):
         "get_queryset":get_queryset,
         "get_serializer_class":get_serializer_class
     } 
+    if "apply" in model:
+        data.update({
+            "serializerApply":srls.applySerializer(name),
+            "apply":apply,
+        })
     return type(model["name"]+"ViewSet",(viewsets.ModelViewSet,),data)
 
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = mds.Project.objects.all()
     serializer_class = srls.fProjectSerializer()
+    serializer_class_retrieve = srls.fProjectSerializer(action=True)
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsUser )
     filter_backends = [DjangoFilterBackend,filters.OrderingFilter]
     filterset_fields = ['auth']
@@ -51,26 +74,34 @@ class ProjectViewSet(viewsets.ModelViewSet):
         return projects 
     def get_serializer_class(self):
         if self.action == 'retrieve':
-            return srls.fProjectSerializer(action=True)
+            return self.serializer_class_retrieve
         return super(ProjectViewSet, self).get_serializer_class()   
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
     def perform_update(self, serializer):
         instance = self.get_object()
         serializer.save(user=instance.user)
-        
+
+    @action(detail=False)
+    def default(self, request, pk=None):
+        serializer = self.serializer_class_retrieve(cst.get_default_project(),context={'request': self.request})
+        return Response(serializer.data) 
+    @action(detail=True, methods=['update'])
+    def apply(self, request, pk=None):
+        data = JSONParser().parse(request)
+        serializer = self.serializerApply(self.get_object(), data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)    
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = srls.UserSerializer
     def get_queryset(self):
-        print()
-        if hasattr(self.request, 'user'):
-           print({"self.request.user":self.request.user})
-           queryset = User.objects.filter(id=self.request.user.id)
-        else:
-            print("Not logged in")
-            queryset = User.objects.none()
+        queryset = User.objects.filter(id=self.request.user.id)
         return queryset
-    def get_serializer_class(self):
-        if self.action == 'list':
-            return srls.UserSrlList
-        if self.action == 'retrieve':
-            return srls.UserSrlRetrieve
+    @action(detail=False)
+    def current(self, request, pk=None):
+        serializer = self.serializer_class(self.request.user,context={'request': self.request}) 
+        return Response(serializer.data)
+
+               

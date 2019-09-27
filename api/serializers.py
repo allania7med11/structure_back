@@ -2,10 +2,48 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from . import models as mds
 from .models import Project
-from django.db import models
+from django.db import models    
 from . import models as mds
 from .infs import cst
-
+def applySerializer(name):
+    model= cst.models[name]
+    def update(self, instance, validated_data):
+        apply = self.model["apply"]
+        modelApply= cst.models[apply]
+        action= validated_data.pop('action')
+        lst= validated_data.pop('lst')
+        project = instance.project
+        if action == 'apply':
+            if lst == "*":
+                qr = modelApply["model"].objects.filter(project=mds.project)
+            else:
+                L = cst.rlist(lst)
+                qr = modelApply["model"].objects.filter(
+                    project=project, name__in=L)
+        elif action == 'remove':
+            if lst == "*":
+                qr = getattr(instance,apply).filter(project=project)
+            else:
+                L = cst.rlist(lst)
+                qr = getattr(instance,apply).filter(
+                    project=project, name__in=L)               
+        if instance and qr:
+            if lst == 'apply':
+                getattr(instance, apply).add(*qr)
+            elif lst == 'remove':
+                if "default" in model:
+                    model_default = cst.get_default(name)
+                    getattr(model_default, apply).add(*qr)
+                else:
+                    getattr(instance, apply).remove(*qr)    
+        return instance
+    data={ 
+            "model" : model,
+            "lst" : serializers.CharField(),
+            "action" : serializers.CharField(max_length=200),
+            "update":update,
+        }
+    return type(model["name"]+"applySerializer",(serializers.Serializer,),data)
 def infSerializer(name):
     model= cst.models[name]
     data={
@@ -56,7 +94,7 @@ def fProjectSerializer(action=None):
 
  
     
-class UserSrlList(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.HyperlinkedModelSerializer):
     projects = serializers.HyperlinkedRelatedField(
         many=True, view_name='project-detail', read_only=True)
 
@@ -64,7 +102,3 @@ class UserSrlList(serializers.HyperlinkedModelSerializer):
         model = User
         fields = ('url', 'id', 'username', 'projects')
 
-class UserSrlRetrieve(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ('url', 'id', 'username')
