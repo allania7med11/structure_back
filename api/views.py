@@ -19,9 +19,9 @@ def fViewSet(name):
         queryset = model["model"].objects.filter(project__user=self.request.user)
         return queryset    
     def get_serializer_class(self):
-        queryset = mds.Project.objects.filter(Q(user=self.request.user) | Q(auth="public"))
+        queryset = mds.Project.objects.filter(user=self.request.user)
         self.filterset_class=flts.fFilter(name,queryset=queryset)
-        return srls.fSerializer(name,queryset=queryset)
+        return srls.fSerializer(name,user=self.request.user)
     data={
         "permission_classes" : (permissions.IsAuthenticated,IsProject ),
         "filter_backends" : [DjangoFilterBackend,filters.OrderingFilter],
