@@ -15,34 +15,44 @@ from . import models as mds
 from rest_framework.decorators import action
 from rest_framework.parsers import JSONParser
 
-@action(detail=True, methods=['put'])
+@action(detail=True, methods=['post'])
 def apply(self, request, pk=None):
-    data = JSONParser().parse(request)
-    serializer = self.serializerApply(self.get_object(), data=data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
+    print(request)
+    serializer_class_apply=self.get_serializer_class()
+    serializer_apply = serializer_class_apply(data=request.data,context={'request': self.request,"pk":pk})
+    if serializer_apply.is_valid():
+        instance=serializer_apply.save()
+        serializer_class=srls.fSerializer(self.nam,user=self.request.user)
+        serializer = serializer_class(instance,context={'request': self.request})
+        return Response({"serializer.data":serializer.data})
     return Response(serializer.errors, status=400) 
-         
+@apply.mapping.get
+def apply_get(self, request, pk=None):
+    serializer_class=srls.fSerializer(self.nam,user=self.request.user)
+    instance=self.model["model"].objects.get(id=7)
+    serializer = serializer_class(instance,context={'request': self.request})
+    return Response({"serializer.data":serializer.data})    
 """ @apply.mapping.get
 def retrieve_apply(self, request, pk=None):
     return Response({"message":"hi"}) """
 
-def fViewSet(name):
-    model= cst.models[name]
+def fViewSet(nam):
+    model= cst.models[nam]
     def get_queryset(self):
-        queryset = model["model"].objects.filter(project__user=self.request.user)
+        queryset = self.model["model"].objects.filter(project__user=self.request.user)
         return queryset    
-    def get_serializer_class(self):
+    def get_serializer_class(self, pk=None):
         queryset = mds.Project.objects.filter(user=self.request.user)
-        self.filterset_class=flts.fFilter(name,queryset=queryset)
+        self.filterset_class=flts.fFilter(self.nam,queryset=queryset)
         if self.action=="apply":
-            return self.serializerApply   
-        return srls.fSerializer(name,user=self.request.user)
+            return srls.applySerializer(self.nam)   
+        return srls.fSerializer(self.nam,user=self.request.user)
     data={
+        "nam":nam,
+        "model":model,
         "permission_classes" : (permissions.IsAuthenticated,IsProject ),
         "filter_backends" : [DjangoFilterBackend,filters.OrderingFilter],
-        "filterset_class":flts.fFilter(name),
+        "filterset_class":flts.fFilter(nam),
         "ordering_fields" : ['project'],
         "ordering" : ['-project'],
         "get_queryset":get_queryset,
@@ -50,8 +60,8 @@ def fViewSet(name):
     } 
     if "apply" in model:
         data.update({
-            "serializerApply":srls.applySerializer(name),
             "apply":apply,
+            "apply_get":apply_get
         })
     return type(model["name"]+"ViewSet",(viewsets.ModelViewSet,),data)
 
@@ -86,14 +96,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     def default(self, request, pk=None):
         serializer = self.serializer_class_retrieve(cst.get_default_project(),context={'request': self.request})
         return Response(serializer.data) 
-    @action(detail=True, methods=['update'])
-    def apply(self, request, pk=None):
-        data = JSONParser().parse(request)
-        serializer = self.serializerApply(self.get_object(), data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=400)    
+      
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = srls.UserSerializer
     def get_queryset(self):

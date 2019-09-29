@@ -5,17 +5,22 @@ from .models import Project
 from django.db import models    
 from . import models as mds
 from .infs import cst
+
 def applySerializer(name):
     model= cst.models[name]
-    def update(self, instance, validated_data):
-        apply = self.model["apply"]
+    def save(self):
+        print(self.validated_data)
+        print({"pk":self.context["pk"]})
+        instance=model["model"].objects.get(id=self.context["pk"])
+        apply = model["apply"]
         modelApply= cst.models[apply]
-        action= validated_data.pop('action')
-        lst= validated_data.pop('lst')
+        action= self.validated_data.pop('action')
+        lst= self.validated_data.pop('lst')
         project = instance.project
         if action == 'apply':
             if lst == "*":
-                qr = modelApply["model"].objects.filter(project=mds.project)
+                qr = modelApply["model"].objects.filter(project=project)
+                print(qr)
             else:
                 L = cst.rlist(lst)
                 qr = modelApply["model"].objects.filter(
@@ -28,9 +33,15 @@ def applySerializer(name):
                 qr = getattr(instance,apply).filter(
                     project=project, name__in=L)               
         if instance and qr:
-            if lst == 'apply':
+            print("qr")
+            print(qr)
+            print(instance)
+            print(lst)
+            if action == "apply":
                 getattr(instance, apply).add(*qr)
-            elif lst == 'remove':
+                print({'apply':getattr(instance, apply).all()})
+                print(lst)
+            elif action == 'remove':
                 if "default" in model:
                     model_default = cst.get_default(name)
                     getattr(model_default, apply).add(*qr)
@@ -38,10 +49,9 @@ def applySerializer(name):
                     getattr(instance, apply).remove(*qr)    
         return instance
     data={ 
-            "model" : model,
-            "lst" : serializers.CharField(),
-            "action" : serializers.CharField(max_length=200),
-            "update":update,
+            "lst" : serializers.CharField(label="List of "+model['apply']),
+            "action" : serializers.ChoiceField(default="apply",choices=[("apply", "apply"),('remove', 'remove'),]),
+            "save":save,
         }
     return type(model["name"]+"applySerializer",(serializers.Serializer,),data)
 def infSerializer(name):
@@ -58,7 +68,7 @@ def fSerializer(name,user=None):
         } 
         if "models" in model:
             for (k,v) in model["models"].items():
-                data[k]=infSerializer(v)(read_only=True) 
+                data[k]=infSerializer(v)(read_only=True)        
     else:
         data={
             "project":serializers.HyperlinkedRelatedField(view_name='project-detail',queryset=mds.Project.objects.filter(user=user)),
@@ -69,7 +79,9 @@ def fSerializer(name,user=None):
                 md=cst.models[v]
                 queryset=md["model"].objects.filter(project__user=user)
                 data[k]=serializers.HyperlinkedRelatedField(view_name=v[:-1]+'-detail',queryset=queryset)
-                
+     
+    if "apply" in model:
+        data[model["apply"]]=infSerializer(model["apply"])(many=True,read_only=True)            
     return type(model["name"]+"Serializer",(serializers.HyperlinkedModelSerializer,),data)
     
 def fProjectSerializer(action=None):

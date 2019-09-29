@@ -7,8 +7,8 @@ class cst(object):
     models={
         "nodes": {"model": mds.Node, "name": "Node", "fields": ["name","X","Z"]},
         "bars": {"model": mds.Bar, "name": "Bar", "fields": ["name",'N1', 'N2'],"models": {"N1": "nodes", "N2": "nodes"}},
-        "supports": {"model": mds.Support, "name": "Support", "fields": ["name",'UX', 'UZ','RY'],"apply":"nodes","default":"None"},
-        "releases": {"model": mds.Release, "name": "Release", "fields": ["name","UX1", "UZ1", "RY1", "UX2", "UZ2", "RY2"],"apply":"bars","default":"None"},
+        "supports": {"model": mds.Support, "name": "Support", "fields": ["name",'UX', 'UZ','RY',"nodes"],"apply":"nodes","default":"None"},
+        "releases": {"model": mds.Release, "name": "Release", "fields": ["name","UX1", "UZ1", "RY1", "UX2", "UZ2", "RY2","bars"],"apply":"bars","default":"None"},
     }
     @staticmethod
     def rlist(st):
@@ -24,6 +24,7 @@ class cst(object):
             L.extend(list(range(min(s), max(s)+1)))
         L = list(set(L))
         L.sort()
+        print({"List":L})
         return L
     @staticmethod
     def get_object(object_name, relayId, otherwise=None):
@@ -38,6 +39,6 @@ class cst(object):
     def get_default(cls,name):
         model=cls.models[name]
         project=cls.get_default_project()
-        return model["model"].get(project=project,name=model.default)    
+        return model["model"].objects.get(project=project,name=model["default"])    
     
     
