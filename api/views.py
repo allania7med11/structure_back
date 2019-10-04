@@ -14,7 +14,8 @@ from .infs import cst
 from . import models as mds      
 from rest_framework.decorators import action
 from rest_framework.parsers import JSONParser
-
+from graph.schema import schema
+from graph.queries import qProject
 @action(detail=True, methods=['post'])
 def apply(self, request, pk=None):
     print(request)
@@ -22,7 +23,7 @@ def apply(self, request, pk=None):
     serializer_apply = serializer_class_apply(data=request.data,context={'request': self.request,"pk":pk})
     if serializer_apply.is_valid():
         instance=serializer_apply.save()
-        serializer_class=srls.fSerializer(self.nam,user=self.request.user)
+        serializer_class=srls.ISerializer[self.nam].fSerializer
         serializer = serializer_class(instance,context={'request': self.request})
         return Response({"serializer.data":serializer.data})
     return Response(serializer.errors, status=400) 
@@ -91,6 +92,14 @@ class ProjectViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         instance = self.get_object()
         serializer.save(user=instance.user)
+    def retrieve(self, request, pk=None):
+        result = schema.execute(qProject,variables={'id': pk},)
+        project=result.data["project"]
+        default=result.data["default"]
+        if pk!='1':
+            for field in cst.apply:
+                project[field].extend(default[field])    
+        return Response(project)
 
     @action(detail=False)
     def default(self, request, pk=None):

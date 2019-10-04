@@ -4,6 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.decorators import action
 class cst(object):
     lst=["nodes","bars","supports","releases"]
+    apply=["supports"]
     models={
         "nodes": {"model": mds.Node, "name": "Node", "fields": ["name","X","Z"]},
         "bars": {"model": mds.Bar, "name": "Bar", "fields": ["name",'N1', 'N2'],"models": {"N1": "nodes", "N2": "nodes"}},

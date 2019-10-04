@@ -15,6 +15,8 @@ djangorestframework = "*"
 markdown = "*"
 django-filter = "*"
 gunicorn = "*"
+graphene-django = "*"
+graphene-django-extras = "*"
 
 [requires]
 python_version = "3.6"

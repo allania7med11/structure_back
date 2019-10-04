@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'django_filters',
     'rest_framework',
+    'graphene_django',
     'accounts',
     'api',
     'myclient'
@@ -146,3 +147,18 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 LOGIN_REDIRECT_URL = 'http://localhost/projects/'
 LOGOUT_REDIRECT_URL = 'http://localhost/accounts/login/'
+
+GRAPHENE = {
+    'SCHEMA': 'server.schema.schema',
+    'SCHEMA_INDENT': 4,
+    'MIDDLEWARE': [
+        'graphene_django_extras.ExtraGraphQLDirectiveMiddleware'
+    ]
+}
+GRAPHENE_DJANGO_EXTRAS = {
+        'DEFAULT_PAGINATION_CLASS': 'graphene_django_extras.paginations.LimitOffsetGraphqlPagination',
+        'DEFAULT_PAGE_SIZE': 20,
+        'MAX_PAGE_SIZE': 50,
+        'CACHE_ACTIVE': True,
+        'CACHE_TIMEOUT': 300    # seconds
+    }
