@@ -58,7 +58,7 @@ class CSerializer:
             request=slf.context["request"]
             print({"user":request.user})
             qs = mds.Project.objects.filter(user=request.user)
-            serializer=serializers.HyperlinkedRelatedField(view_name='project-detail',queryset=qs)
+            serializer=serializers.ModelSerializer(queryset=qs)
             return serializer.data  
         return fct
     @property    
@@ -67,7 +67,7 @@ class CSerializer:
             request=slf.context["request"]
             print({"user":request.user})
             qs = self.modelApply["model"].objects.filter(**{"project__user":request.user,self.model["name"]:instance})
-            serializer=serializers.HyperlinkedRelatedField(view_name='project-detail',queryset=qs,many=True,read_only=True)
+            serializer=serializers.ModelSerializer(queryset=qs,many=True,read_only=True)
             return serializer.data  
         return fct
     def get_(self,md):
@@ -75,7 +75,7 @@ class CSerializer:
             request=slf.context["request"]
             print({"user":request.user})
             qs = md["model"].objects.filter(project__user=request.user)
-            serializer=serializers.HyperlinkedRelatedField(view_name='project-detail',queryset=qs,many=True,read_only=True)
+            serializer=serializers.ModelSerializer(queryset=qs,many=True,read_only=True)
             return serializer.data   
         return fct
     
@@ -93,7 +93,7 @@ class CSerializer:
         if "apply" in self.model:
             data[self.apply]=serializers.SerializerMethodField('get_'+self.apply)
             data["get_"+self.apply]=self.get_apply           
-        return type(self.model["name"]+"Serializer",(serializers.HyperlinkedModelSerializer,),data)
+        return type(self.model["name"]+"Serializer",(serializers.ModelSerializer,),data)
     @property
     def applySerializer(self):
         data={ 
@@ -160,7 +160,7 @@ def infSerializer(name):
     data={
             "Meta":type("Meta", (object,),{"model": model["model"],"fields" : ('url',"name")   }) 
         }
-    return type(model["name"]+"infSerializer",(serializers.HyperlinkedModelSerializer,),data)    
+    return type(model["name"]+"infSerializer",(serializers.ModelSerializer,),data)    
 def fSerializer(name,user=None):
     model= cst.models[name]
     if user==None:
@@ -174,7 +174,7 @@ def fSerializer(name,user=None):
                 data["get_"+k]=ISerializer[v].get_(md)        
     else:
         data={
-            "project":serializers.HyperlinkedRelatedField(view_name='project-detail',queryset=mds.Project.objects.filter(user=user)),
+            "project":serializers.ModelSerializer(queryset=mds.Project.objects.filter(user=user)),
             "Meta":type("Meta", (object,),{"model": model["model"],"fields" : ('url', 'id','project','modified_date',*model["fields"])   }),
         } 
         if "models" in model:
@@ -185,12 +185,12 @@ def fSerializer(name,user=None):
                
     if "apply" in model:
         data[model["apply"]]=infSerializer(model["apply"])(many=True,read_only=True)            
-    return type(model["name"]+"Serializer",(serializers.HyperlinkedModelSerializer,),data)
+    return type(model["name"]+"Serializer",(serializers.ModelSerializer,),data)
 def Serializer1(name,model,fields):
     data={
             "Meta":type("Meta", (object,),{"model": model,"fields" : ('url', 'id','project','modified_date',*fields)   }) 
         }
-    return type(name,(serializers.HyperlinkedModelSerializer,),data) 
+    return type(name,(serializers.ModelSerializer,),data) 
 
 class CProjectSerializer:
     def get_(self,k):
@@ -209,7 +209,7 @@ class CProjectSerializer:
             **{k:serializers.ListField(read_only=True, child=ISerializer[k].fSerializer() ) for k in cst.lst},
             "Meta":type("Meta", (object,),{"model": mds.Project,"fields" : ('url', 'id', 'name', 'user','auth',*cst.lst)   }),
         }  
-        ProjectSerializer=type("ProjectSerializer",(serializers.HyperlinkedModelSerializer,),data) 
+        ProjectSerializer=type("ProjectSerializer",(serializers.ModelSerializer,),data) 
         return ProjectSerializer 
 
 IProjectSerializer= CProjectSerializer() 
@@ -227,17 +227,14 @@ def fProjectSerializer(action=None):
         for k in cst.lst:  
             data[k]=serializers.SerializerMethodField('get_'+k)
             data["get_"+k]=IProjectSerializer.get_(k)      
-    ProjectSerializer=type("ProjectSerializer",(serializers.HyperlinkedModelSerializer,),data) 
+    ProjectSerializer=type("ProjectSerializer",(serializers.ModelSerializer,),data) 
     return ProjectSerializer
           
 
 
  
     
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    projects = serializers.HyperlinkedRelatedField(
-        many=True, view_name='project-detail', read_only=True)
-
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('url', 'id', 'username', 'projects')
