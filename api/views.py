@@ -14,7 +14,7 @@ from . import models as mds
 from rest_framework.decorators import action
 from rest_framework.parsers import JSONParser
 from graph.schema import schema
-from graph.queries import qProject
+from graph.queries import qProject,qApply
 
 class CViewSet:
     def __init__(self, name):
@@ -40,6 +40,7 @@ class CViewSet:
         return flt
     @property    
     def apply(self):
+        retrieve=self.retrieve
         @action(detail=True, methods=['post'])
         def apply(slf, request, pk=None):
             print(request)
@@ -47,23 +48,19 @@ class CViewSet:
             serializer_apply = serializer_class_apply(data=request.data,context={'request': slf.request,"pk":pk})
             if serializer_apply.is_valid():
                 serializer_apply.save()
-                return slf.retrieve(request, pk=None)
+                return retrieve(slf,request, pk=None)
             return Response(serializer_apply.errors, status=400)
         @apply.mapping.get
         def apply_get(slf, request, pk=None):
-            return slf.retrieve(request, pk=None)
+            return retrieve(slf,request, pk=None)
         return {"apply":apply,"apply_get":apply_get}
     @property    
     def retrieve(self):
         def flt(slf, request, pk=None):
             instance=slf.get_object()
-            result = schema.execute(qProject,variables={'id': instance.project.id},)
-            project=result.data["project"]
-            default=result.data["default"]
-            if pk!='1':
-                for field in cst.apply:
-                    project[field].extend(default[field])    
-            return Response(project)
+            result = schema.execute(qApply(self.name[:-1],self.model["apply"]),variables={'id': instance.id,'idU': request.user.id},)   
+            print(result)
+            return Response(result.data[self.name[:-1]])
         return flt
     @property 
     def fViewSet(self):
@@ -74,7 +71,6 @@ class CViewSet:
             "ordering" : ['-project'],
             "get_queryset":self.get_queryset,
             "get_serializer_class":self.get_serializer_class,
-            "retrieve":self.retrieve
         } 
         if "apply" in self.model:
             Apply=self.apply
@@ -109,7 +105,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         project=result.data["project"]
         default=result.data["default"]
         if pk!='1':
-            for field in cst.apply:
+            for field in cst.default:
                 project[field].extend(default[field])    
         return Response(project)
 

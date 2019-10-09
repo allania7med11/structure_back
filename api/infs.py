@@ -2,17 +2,24 @@ from . import models as mds
 import re
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.decorators import action
-class cst(object):
-    lst=["nodes","bars","supports","releases"]
-    lstP=["projects","nodes","bars","supports","releases"]
-    apply=["supports","releases"]
+class Classcst(object):
+    lst=["nodes","bars","supports","releases","materials","sections"]
+    apply=["supports","releases","sections"]
     models={
         "projects": {"model": mds.Project, "name": "Project", "fields": ["name"]},
         "nodes": {"model": mds.Node, "name": "Node", "fields": ["name","X","Z"]},
         "bars": {"model": mds.Bar, "name": "Bar", "fields": ["name",'N1', 'N2'],"models": {"N1": "nodes", "N2": "nodes"}},
         "supports": {"model": mds.Support, "name": "Support", "fields": ["name",'UX', 'UZ','RY'],"apply":"nodes","default":"None"},
         "releases": {"model": mds.Release, "name": "Release", "fields": ["name","UX1", "UZ1", "RY1", "UX2", "UZ2", "RY2"],"apply":"bars","default":"None"},
+        "materials": {"model": mds.Material, "name": "Material", "fields": ["name",'YM', 'Density']},
+        "sections": {"model": mds.Section, "name": "Section", "fields": ["name",'material', 'type','features'],"apply":"bars","default":"Default"},
     }
+    @property
+    def lstP(self):
+        return [*self.lst,"projects"]
+    @property
+    def default(self):
+        return [*self.apply,"materials"] 
     @staticmethod
     def rlist(st):
         di = re.findall(r'(?:,|^)\s*(\d+)', st)
@@ -44,3 +51,4 @@ class cst(object):
         project=cls.get_default_project()
         return model["model"].objects.get(project=project,name=model["default"])    
     
+cst=Classcst()

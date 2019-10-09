@@ -4,6 +4,8 @@ from django.db import models
 from api.infs import cst
 from api.help.serializers import UserRelatedField,ProjectRelatedField
 from api import models as mds  
+from api.help.RDM import CG
+import json
 class CSerializer:
     def __init__(self, name):
         self.name = name
@@ -48,7 +50,27 @@ class CSerializer:
                     else:
                         getattr(instance, self.apply).remove(*qr)    
             return instance
-        return fct    
+        return fct 
+    @property
+    def saveSection(self):
+        def create(slf, validated_data):
+            validated_data["features"]=json.loads(validated_data["features"])
+            validated_data.update(CG(validated_data["type"], validated_data["features"] ))
+            print("validated_data")
+            print(validated_data)
+            return self.model["model"].objects.create(**validated_data)
+        def update(slf, instance, validated_data):
+            validated_data["features"]=json.loads(validated_data["features"])
+            validated_data.update(CG(validated_data["type"], validated_data["features"] ))
+            print("validated_data")
+            print(validated_data)
+            for key, value in validated_data.items():
+                setattr(instance, key, value) 
+            instance.save()
+            print(instance)
+            return instance
+        return {"create":create,"update":update}
+
     @property
     def fSerializer(self):
         mdP=cst.models["projects"]
@@ -59,8 +81,12 @@ class CSerializer:
         if "models" in self.model:
             for (k,v) in self.model["models"].items():  
                 md=cst.models[v]
-                data[k]=ProjectRelatedField(queryset=md["model"].objects.objects.all())
-           
+                data[k]=ProjectRelatedField(queryset=md["model"].objects.all())
+        if self.name == "sections":
+            Save=self.saveSection
+            data['features']=serializers.JSONField()
+            data["create"]=Save["create"]
+            data["update"]=Save["update"]
         return type(self.model["name"]+"Serializer",(serializers.ModelSerializer,),data)
     @property
     def applySerializer(self):

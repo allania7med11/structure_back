@@ -15,7 +15,7 @@ class CType:
         data={
             "Meta":type("Meta", (object,),{
                 "model": self.model["model"],
-                'filter_fields':{"id": ("exact", ),"project": ("exact", ),}   
+                'filter_fields':{"id": ("exact", ),"project": ("exact", ),"project__user": ("exact", )}   
             }),
         }
         return type(self.model["name"]+"Type",(extras.DjangoObjectType,),data)

@@ -112,7 +112,7 @@ class Section(models.Model):
     Iy = models.FloatField()
     H = models.FloatField()
     Cy = models.FloatField()
-    type = models.CharField(max_length=200, default="Custom")
+    type = models.CharField(max_length=20, default="Custom")
     features = JSONField()
 
     class Meta:
@@ -186,3 +186,11 @@ class Task(models.Model):
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
   	pass
+
+""" 
+choices=[("RCT", "Rectangular"),("RCTH", "Rectangular Hollow"),
+                 ("CRC", "Circular"),("CRCH", "Circular Hollow"),
+                 ("TSC", "T Section"),("ISC", "I Section"),
+                 ("CST", "Custom"),
+                 ]
+                  """
