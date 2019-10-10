@@ -8,6 +8,7 @@ query project($id: ID!) {
     releases{project{id},id,name,UX1,UZ1,RY1,UX2,UZ2,RY2,bars{id,name}},
     materials{project{id},id,name,YM,Density}
     sections{project{id},id,name,material{id,name},type,features,bars{id,name},Ax,Iy,H,Cy},
+    pls{project{id},id,name,FX,FZ,CY,nodes{id,name}}
   }
   default:project(id: 1) {
     id,name

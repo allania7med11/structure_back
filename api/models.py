@@ -50,7 +50,7 @@ class Node(models.Model):
     def __str__(self):
         return str(self.name)
 
-class Point_Load(models.Model):
+class Pl(models.Model):
     modified_date = models.DateTimeField(auto_now=True)
     project = models.ForeignKey(
         Project, on_delete=models.CASCADE, related_name='pls')

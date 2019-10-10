@@ -3,8 +3,9 @@ import re
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.decorators import action
 class Classcst(object):
-    lst=["nodes","bars","supports","releases","materials","sections"]
-    apply=["supports","releases","sections"]
+    lst=["nodes","bars","supports","releases","materials","sections","pls"]
+    apply=["supports","releases","sections","pls"]
+    default=["supports","releases","sections","materials"]
     models={
         "projects": {"model": mds.Project, "name": "Project", "fields": ["name"]},
         "nodes": {"model": mds.Node, "name": "Node", "fields": ["name","X","Z"]},
@@ -13,13 +14,11 @@ class Classcst(object):
         "releases": {"model": mds.Release, "name": "Release", "fields": ["name","UX1", "UZ1", "RY1", "UX2", "UZ2", "RY2"],"apply":"bars","default":"None"},
         "materials": {"model": mds.Material, "name": "Material", "fields": ["name",'YM', 'Density']},
         "sections": {"model": mds.Section, "name": "Section", "fields": ["name",'material', 'type','features'],"apply":"bars","default":"Default"},
+        "pls": {"model": mds.Pl, "name": "Pl", "fields": ["name","FX", "FZ", "CY"],"apply":"nodes"},
     }
     @property
     def lstP(self):
         return [*self.lst,"projects"]
-    @property
-    def default(self):
-        return [*self.apply,"materials"] 
     @staticmethod
     def rlist(st):
         di = re.findall(r'(?:,|^)\s*(\d+)', st)

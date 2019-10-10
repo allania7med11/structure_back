@@ -76,7 +76,7 @@ class CSerializer:
         mdP=cst.models["projects"]
         data={
                 "project":UserRelatedField(queryset= mdP["model"].objects.all()),
-                "Meta":type("Meta", (object,),{"model": self.model["model"],"fields" : ('url', 'id','project','modified_date',*self.model["fields"])   }),
+                "Meta":type("Meta", (object,),{"model": self.model["model"],"fields" : ('url','id','project','modified_date',*self.model["fields"])   }),
             }
         if "models" in self.model:
             for (k,v) in self.model["models"].items():  
