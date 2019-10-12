@@ -18,9 +18,13 @@ class ReleaseAdmin(admin.ModelAdmin):
 class SectionAdmin(admin.ModelAdmin):
     list_display = ('id', 'project', 'name', "material", 'type', "features")
 
+class PlAdmin(admin.ModelAdmin):
+    list_display = ('id', 'project', 'name', "FX", 'FZ', "CY")
 
-class Distributed_LoadAdmin(admin.ModelAdmin):
+class DlAdmin(admin.ModelAdmin):
     list_display = ('id', 'project', 'name', "Axes", 'type', "features")
+
+
 
 class MaterialAdmin(admin.ModelAdmin):
     list_display = ('id', 'project', 'name', 'YM', "Density")
@@ -33,6 +37,7 @@ admin.site.register(Support, SupportAdmin)
 admin.site.register(Release, ReleaseAdmin)
 admin.site.register(Material, MaterialAdmin)
 admin.site.register(Section, SectionAdmin)
-admin.site.register(Distributed_Load, Distributed_LoadAdmin)
+admin.site.register(Pl, PlAdmin)
+admin.site.register(Dl, DlAdmin)
 admin.site.register(Project,ProjectAdmin)
 

@@ -52,15 +52,16 @@ class CSerializer:
             return instance
         return fct 
     @property
+    def validate_features(self):
+        def ftn(slf, value):
+            return json.loads(value)
+        return ftn
+    @property
     def saveSection(self):
         def create(slf, validated_data):
-            validated_data["features"]=json.loads(validated_data["features"])
             validated_data.update(CG(validated_data["type"], validated_data["features"] ))
-            print("validated_data")
-            print(validated_data)
             return self.model["model"].objects.create(**validated_data)
         def update(slf, instance, validated_data):
-            validated_data["features"]=json.loads(validated_data["features"])
             validated_data.update(CG(validated_data["type"], validated_data["features"] ))
             print("validated_data")
             print(validated_data)
@@ -82,9 +83,11 @@ class CSerializer:
             for (k,v) in self.model["models"].items():  
                 md=cst.models[v]
                 data[k]=ProjectRelatedField(queryset=md["model"].objects.all())
+        if "features" in self.model["fields"]:
+            data['features']=serializers.JSONField()
+            data['validate_features']=self.validate_features
         if self.name == "sections":
             Save=self.saveSection
-            data['features']=serializers.JSONField()
             data["create"]=Save["create"]
             data["update"]=Save["update"]
         return type(self.model["name"]+"Serializer",(serializers.ModelSerializer,),data)

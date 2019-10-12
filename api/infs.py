@@ -3,8 +3,8 @@ import re
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.decorators import action
 class Classcst(object):
-    lst=["nodes","bars","supports","releases","materials","sections","pls"]
-    apply=["supports","releases","sections","pls"]
+    lst=["nodes","bars","supports","releases","materials","sections","pls","dls"]
+    apply=["supports","releases","sections","pls","dls"]
     default=["supports","releases","sections","materials"]
     models={
         "projects": {"model": mds.Project, "name": "Project", "fields": ["name"]},
@@ -15,6 +15,7 @@ class Classcst(object):
         "materials": {"model": mds.Material, "name": "Material", "fields": ["name",'YM', 'Density']},
         "sections": {"model": mds.Section, "name": "Section", "fields": ["name",'material', 'type','features'],"apply":"bars","default":"Default"},
         "pls": {"model": mds.Pl, "name": "Pl", "fields": ["name","FX", "FZ", "CY"],"apply":"nodes"},
+        "dls": {"model": mds.Dl, "name": "Dl", "fields": ["name","type", "Axes", "features"],"apply":"bars"},
     }
     @property
     def lstP(self):

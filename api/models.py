@@ -154,7 +154,7 @@ class Bar(models.Model):
         y = str(self.name)
         return y
 
-class Distributed_Load(models.Model):
+class Dl(models.Model):
     modified_date = models.DateTimeField(auto_now=True)
     project = models.ForeignKey(
         Project, on_delete=models.CASCADE, related_name='dls')

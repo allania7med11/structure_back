@@ -15,6 +15,8 @@ from rest_framework.decorators import action
 from rest_framework.parsers import JSONParser
 from graph.schema import schema
 from graph.queries import qProject,qApply
+from api.help.cl import fRun
+from django.core.exceptions import ValidationError
 
 class CViewSet:
     def __init__(self, name):
@@ -108,7 +110,17 @@ class ProjectViewSet(viewsets.ModelViewSet):
             for field in cst.default:
                 project[field].extend(default[field])    
         return Response(project)
-
+    @action(detail=True)
+    def run(self, request, pk=None):
+        try:
+            e = fRun(pk)
+            print(e)
+            if e == False:
+                return Response({"error":True})
+            else:
+                return self.retrieve(request, pk)
+        except ValidationError as e:
+            return Response({"error":e})
     
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = UserSerializer
