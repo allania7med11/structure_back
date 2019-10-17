@@ -14,7 +14,7 @@ from . import models as mds
 from rest_framework.decorators import action
 from rest_framework.parsers import JSONParser
 from graph.schema import schema
-from graph.queries import qProject,qApply
+from graph.queries import qProject,qApply,qResults
 from api.help.cl import fRun
 from django.core.exceptions import ValidationError
 
@@ -118,7 +118,13 @@ class ProjectViewSet(viewsets.ModelViewSet):
             if e == False:
                 return Response({"error":True})
             else:
-                return self.retrieve(request, pk)
+                result = schema.execute(qResults,variables={'id': pk},)
+                print(result)
+                project=result.data["project"]
+                default=result.data["default"]
+                if pk!='1':
+                    project["sections"].extend(default["sections"])  
+                return Response(project)
         except ValidationError as e:
             return Response({"error":e})
     
