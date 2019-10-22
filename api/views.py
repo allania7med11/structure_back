@@ -14,8 +14,9 @@ from . import models as mds
 from rest_framework.decorators import action
 from rest_framework.parsers import JSONParser
 from graph.schema import schema
-from graph.queries import qProject,qApply,qResults
+from graph.queries import Queries
 from api.help.cl import fRun
+from api.help.copy import Copy
 from django.core.exceptions import ValidationError
 
 class CViewSet:
@@ -60,7 +61,7 @@ class CViewSet:
     def retrieve(self):
         def flt(slf, request, pk=None):
             instance=slf.get_object()
-            result = schema.execute(qApply(self.name[:-1],self.model["apply"]),variables={'id': instance.id,'idU': request.user.id},)   
+            result = schema.execute(Queries.apply(self.name[:-1],self.model["apply"]),variables={'id': instance.id,'idU': request.user.id},)   
             print(result)
             return Response(result.data[self.name[:-1]])
         return flt
@@ -94,6 +95,10 @@ class ProjectViewSet(viewsets.ModelViewSet):
     filterset_fields = ['auth']
     ordering_fields = ['auth']
     ordering = ['auth']
+    def get_serializer_class(self):
+        if self.action=="copy":
+            return Copy.copySerializer
+        return self.serializer_class
     def get_queryset(self):
         projects = mds.Project.objects.filter(user=self.request.user)
         return projects  
@@ -103,7 +108,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         serializer.save(user=instance.user)
     def retrieve(self, request, pk=None):
-        result = schema.execute(qProject,variables={'id': pk},)
+        result = schema.execute(Queries.project,variables={'id': pk},)
         project=result.data["project"]
         default=result.data["default"]
         if pk!='1':
@@ -118,8 +123,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
             if e == False:
                 return Response({"error":True})
             else:
-                result = schema.execute(qResults,variables={'id': pk},)
-                print(result)
+                result = schema.execute(Queries.results,variables={'id': pk},)
                 project=result.data["project"]
                 default=result.data["default"]
                 if pk!='1':
@@ -127,7 +131,26 @@ class ProjectViewSet(viewsets.ModelViewSet):
                 return Response(project)
         except ValidationError as e:
             return Response({"error":e})
-    
+    @action(detail=True, methods=['post'])
+    def copy(self, request, pk=None):
+        try:
+            prc = schema.execute(Queries.copy,variables={'id': pk},)
+            print("prc",prc.data)
+            context={'request': request,"pk":pk,"data":prc.data["project"]}
+            print("context",context)
+            serializer_class_copy=Copy.copySerializer
+            serializer_copy = serializer_class_copy(data=request.data,context=context)
+            if serializer_copy.is_valid():
+                print("serializer_copy",serializer_copy)
+                instance=serializer_copy.save()
+                print( "instance", instance)
+            return self.retrieve(request, pk)
+            
+        except ValidationError as e:
+            return Response({"error":e})
+    @copy.mapping.get
+    def copy_get(self, request, pk=None):
+        return Response({"tese":"test"})
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = UserSerializer
     def get_queryset(self):
