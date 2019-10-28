@@ -3,7 +3,7 @@ from rest_framework import permissions, renderers, viewsets,filters,serializers
 from rest_framework.response import Response
 from . import filters as flts
 from .permissions import IsUser,IsProject
-from api.serializers import ISerializer,ProjectSerializer,UserSerializer
+from api.serializers import ISerializer,ProjectSerializer,IUserSerializer,ContactForm
 from rest_framework import status
 from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
@@ -18,7 +18,7 @@ from graph.queries import Queries
 from api.help.cl import fRun
 from api.help.copy import Copy
 from django.core.exceptions import ValidationError
-
+from django.core.mail import send_mail, BadHeaderError
 class CViewSet:
     def __init__(self, name):
         self.name = name
@@ -166,14 +166,31 @@ class ProjectViewSet(viewsets.ModelViewSet):
     def copy_get(self, request, pk=None):
         return Response({"tese":"test"})
     
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = UserSerializer
+class UserViewSet(viewsets.ModelViewSet):
+    serializer_class = IUserSerializer.fSerializer
     def get_queryset(self):
         queryset = User.objects.filter(id=self.request.user.id)
         return queryset
+    def get_serializer_class(self):
+        if self.action=="contact":
+            return IUserSerializer.contactSerializer
+        return self.serializer_class
     @action(detail=False)
     def current(self, request, pk=None):
         serializer = self.serializer_class(self.request.user,context={'request': self.request}) 
         return Response(serializer.data)
-
-               
+    @action(detail=False, methods=['post'])
+    def contact(self, request, pk=None):
+        serializer_class_contact=IUserSerializer.contactSerializer
+        serializer_contact = serializer_class_contact(data=request.data,context={'request': self.request})
+        if serializer_contact.is_valid():
+            subject = serializer_contact.validated_data['subject']
+            from_email = serializer_contact.validated_data['from_email']
+            message = serializer_contact.validated_data['message']
+            try:
+                send_mail(subject, message, from_email, ['allania7med11@gmail.com'])
+            except BadHeaderError:
+                return Response({"error":'Invalid header found.'})
+            return Response({"msg":'Success'})
+        return Response(serializer_contact.errors, status=400)
+       

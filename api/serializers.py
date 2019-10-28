@@ -111,9 +111,25 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = mds.Project
         fields = ('url', 'id', 'name', 'user','auth','modified_date')
-          
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('url', 'id', 'username', 'projects')
+
+class CUserSerializer:
+    model = User
+    fields = ('url', 'id', 'username')
+    @property
+    def fSerializer(self):
+        data={"Meta":type("Meta", (object,),{"model": self.model,"fields" : self.fields  }),}
+        return type("UserSerializer",(serializers.ModelSerializer,),data)   
+    @property
+    def contactSerializer(self):
+        data={
+            "from_email" : serializers.EmailField(),
+            "subject" : serializers.CharField(),
+            "message" : serializers.CharField()
+        }
+        return type("contactSerializer",(serializers.Serializer,),data)    
+class ContactForm(serializers.Serializer):
+    email = serializers.EmailField()
+    message = serializers.CharField()
+
+IUserSerializer=CUserSerializer()
 
