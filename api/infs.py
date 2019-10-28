@@ -17,6 +17,22 @@ class Classcst(object):
         "pls": {"model": mds.Pl, "name": "Pl", "fields": ["name","FX", "FZ", "CY"],"apply":"nodes"},
         "dls": {"model": mds.Dl, "name": "Dl", "fields": ["name","type", "Axes", "features"],"apply":"bars"},
     }
+    project= {
+        "model": mds.Project, 
+        "username":"allania7med11",
+        "default":"Default",
+        "Tutorials":["project 1","Truss Structure","Frame Structure","Beams with Internal Hinges"],
+        "urls":{
+            "project 1":"Beam",
+            "Truss Structure":"TrussStructure",
+            "Frame Structure":"FrameStructure",
+            "Beams with Internal Hinges":"BeamsInternalHinges"
+            }
+        }
+    
+    @property
+    def urlsI(self):
+        return { v:k for (k,v) in self.project["urls"].items()}
     @property
     def lstP(self):
         return [*self.lst,"projects"]
@@ -42,13 +58,17 @@ class Classcst(object):
             return object_name.objects.get(pk=relayId)
         except ObjectDoesNotExist:
             return otherwise
-    @staticmethod
-    def get_default_project():
-        return mds.Project.objects.get(user__username="allania7med11",name="Default")         
-    @classmethod
-    def get_default(cls,name):
-        model=cls.models[name]
-        project=cls.get_default_project()
+    @property
+    def get_default_project(self):
+        return self.project["model"].objects.get(user__username=self.project["username"],name=self.project["default"])         
+    @property
+    def get_Tutorials(self):
+        return list( self.project["model"].objects.filter(
+            user__username=self.project["username"],
+            name__in=self.project["Tutorials"]).values('id', 'name') ) 
+    def get_default(self,name):
+        model=self.models[name]
+        project=self.get_default_project
         return model["model"].objects.get(project=project,name=model["default"])    
     
 cst=Classcst()

@@ -107,14 +107,28 @@ class ProjectViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         instance = self.get_object()
         serializer.save(user=instance.user)
-    def retrieve(self, request, pk=None):
-        result = schema.execute(Queries.project,variables={'id': pk},)
+    def get_project(self, id):
+        result = schema.execute(Queries.project,variables={'id': id},)
         project=result.data["project"]
         default=result.data["default"]
-        if pk!='1':
+        if id!='1':
             for field in cst.default:
-                project[field].extend(default[field])    
+                project[field].extend(default[field])   
+        return project
+    def retrieve(self, request, pk=None):
+        project=self.get_project(pk)   
         return Response(project)
+    @action(detail=False)
+    def Tutorials(self, request):
+        name = self.request.query_params.get('name', False)
+        projects = {}
+        List=cst.get_Tutorials
+        if (name!=False):
+           List=list(filter(lambda x: x["name"]==cst.urlsI[name], List))
+        for item in List:
+            name=cst.project["urls"][item["name"]]
+            projects[name]=self.get_project(item["id"])
+        return Response(projects)
     @action(detail=True)
     def run(self, request, pk=None):
         try:
@@ -151,6 +165,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     @copy.mapping.get
     def copy_get(self, request, pk=None):
         return Response({"tese":"test"})
+    
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = UserSerializer
     def get_queryset(self):
