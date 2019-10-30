@@ -9,7 +9,13 @@ from django.http import HttpResponse
 from .forms import SignUpForm, UserInformationUpdateForm
 
 
+def login(request):
+    return render(request, 'core/login.html')
 
+@login_required
+def home(request):
+    return render(request, 'core/home.html')
+    
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)

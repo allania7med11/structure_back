@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'graphene_django',
     'accounts',
     'api',
-    'myclient'
+    'myclient',
+    'social_django', # add this 
+    'core' # add this
 ]
 
 MIDDLEWARE = [
@@ -54,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'social_django.middleware.SocialAuthExceptionMiddleware'
 ]
 
 ROOT_URLCONF = 'server.urls'
@@ -69,6 +72,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends', # add this
+                'social_django.context_processors.login_redirect', # add this
             ],
         },
     },
@@ -147,6 +152,11 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 LOGIN_REDIRECT_URL = 'http://localhost/projects/'
 LOGOUT_REDIRECT_URL = 'http://localhost/accounts/login/'
+""" LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_URL = 'logout'
+LOGOUT_REDIRECT_URL = 'login' """
+
 
 GRAPHENE = {
     'SCHEMA': 'server.schema.schema',
@@ -171,3 +181,31 @@ EMAIL_HOST_PASSWORD = '25041991.Avril'
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'admin@effectivewebapp.com'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+
+AUTHENTICATION_BACKENDS = [
+        'social_core.backends.google.GoogleOAuth2',
+        'social_core.backends.facebook.FacebookOAuth2',
+        'django.contrib.auth.backends.ModelBackend',
+    ]
+
+SOCIAL_AUTH_FACEBOOK_KEY = 488035381788628        # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = "33e068b3d062e625f06e59131118935d"  # App Secret
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', 'user_link'] # add this
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {       # add this
+    'fields': 'id, name, email, picture.type(large), link'
+}
+SOCIAL_AUTH_FACEBOOK_EXTRA_DATA = [                 # add this
+    ('name', 'name'),
+    ('email', 'email'),
+    ('picture', 'picture'),
+    ('link', 'profile_url'),
+]
+
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '565983255094-hhc6rjc7pr2buo80g98np6fg9ecq9246.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '0oE-rGo3h0dPvsHQ9M6dS1jA'
+
+SOCIAL_AUTH_FACEBOOK_KEY = 488035381788628        # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = "33e068b3d062e625f06e59131118935d"  # App Secret
+
