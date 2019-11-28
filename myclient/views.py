@@ -4,4 +4,5 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 @ensure_csrf_cookie
 def auth(request):
+    print("request",request)
     return HttpResponse(status=200)

@@ -8,6 +8,7 @@ class Project(models.Model):
     name = models.CharField(max_length=200)
     user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='projects')
     auth = models.CharField(max_length=10,default="private",choices=[("private", "private"),("public", "public"),])
+    results = models.BooleanField(default=False)
     class Meta:
         unique_together = (("name","user"),)
     def __str__(self):

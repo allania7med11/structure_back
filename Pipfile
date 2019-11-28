@@ -20,6 +20,8 @@ graphene-django-extras = "*"
 sympy = "*"
 numpy = "*"
 social-auth-app-django = "*"
+pylint-django = "*"
+autopep8 = "*"
 
 [requires]
 python_version = "3.6"

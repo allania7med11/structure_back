@@ -2,7 +2,7 @@ class cQueries:
     project = '''
 		query project($id: ID!) {
 			project(id: $id) {
-				id,name,
+				id,name,results,
 				nodes {project{id},id,name,X,Z,Support{name},pls{name},N1{name},N2{name},Rc,Dp}
 				supports {project{id},id,name,UX,UZ,RY,nodes{id,name}}
 				bars{project{id},id,name,N1{id,name,X,Z},N2{id,name,X,Z},Release{name},Section{name,type},dls{name,type},L,Rl,Rg,Ql,Qg,EF,DP,S,EFm,DPm,Sm} 
