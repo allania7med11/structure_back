@@ -13,3 +13,4 @@ RUN pipenv install --skip-lock --system --dev
 
 COPY . /server
 EXPOSE 8000
+EXPOSE 9000
