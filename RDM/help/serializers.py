@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from api import models as mds
-from api.infs import cst
+from RDM import models as mds
+from RDM.infs import cst
 
 class UserRelatedField(serializers.PrimaryKeyRelatedField):
     def get_queryset(self):

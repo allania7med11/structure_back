@@ -1,6 +1,6 @@
 import json
-from api import models as mds
-from api.help.RDM import CG
+from RDM import models as mds
+from RDM.help.RDM import CG
 from rest_framework import serializers
 class cCopy(object):
     one={"Support":mds.Support,"N1":mds.Node,"N2":mds.Node,

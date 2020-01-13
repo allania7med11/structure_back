@@ -2,8 +2,8 @@ from django.contrib.auth.models import User
 import graphene_django_extras as extras
 
 from graphene_django_extras import DjangoListObjectType, DjangoSerializerType, DjangoObjectType
-from api.models import Project
-from api.infs import cst
+from RDM.models import Project
+from RDM.infs import cst
 class CType:
     def __init__(self, name):
         self.name = name

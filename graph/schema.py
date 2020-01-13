@@ -1,7 +1,7 @@
 import graphene
 import graphene_django_extras as extras
 from graph.types import IType
-from api.infs import cst
+from RDM.infs import cst
 class CSchema:
     @property
     def fQueries(self):

@@ -1,4 +1,4 @@
-from api.models import Support,Node,Project
+from RDM.models import Support,Node,Project
 print("hello")
 instance= Support.objects.get(id=7)
 print(instance)

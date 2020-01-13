@@ -1,5 +1,5 @@
-from api.models import *
-from api.help.RDM import *
+from RDM.models import *
+from RDM.help.RDM import *
 import sympy as sp
 import numpy as np
 from decimal import *

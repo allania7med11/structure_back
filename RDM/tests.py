@@ -59,7 +59,7 @@ router.register(r'supports', views.SupportViewSet)
 router.register(r'users', views.UserViewSet)
 
 # The API URLs are now determined automatically by the router.
-# Additionally, we include the login URLs for the browsable API.
+# Additionally, we include the login URLs for the browsable RDM.
 urlpatterns = [
     url(r'^', include(router.urls))
 ]

@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'graphene_django',
     'accounts',
-    'api',
+    'RDM',
     'myclient',
     'social_django', # add this 
     'core' # add this

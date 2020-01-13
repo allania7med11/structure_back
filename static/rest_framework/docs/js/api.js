@@ -201,25 +201,25 @@ $(function () {
     // Setup authentication options.
     if (window.auth && window.auth.type === 'token') {
       // Header authentication
-      options.auth = new coreapi.auth.TokenAuthentication({
+      options.auth = new coreRDM.auth.TokenAuthentication({
         scheme: window.auth.scheme,
         token: window.auth.token
       })
     } else if (window.auth && window.auth.type === 'basic') {
       // Basic authentication
-      options.auth = new coreapi.auth.BasicAuthentication({
+      options.auth = new coreRDM.auth.BasicAuthentication({
         username: window.auth.username,
         password: window.auth.password
       })
     } else if (window.auth && window.auth.type === 'session') {
       // Session authentication
-      options.auth = new coreapi.auth.SessionAuthentication({
+      options.auth = new coreRDM.auth.SessionAuthentication({
         csrfCookieName: 'csrftoken',
         csrfHeaderName: 'X-CSRFToken'
       })
     }
 
-    var client = new coreapi.Client(options)
+    var client = new coreRDM.Client(options)
     client.action(schema, key, params).then(function (data) {
       var response = JSON.stringify(data, null, 2)
       $requestAwaiting.addClass('hide')

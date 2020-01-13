@@ -1,10 +1,10 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from django.db import models
-from api.infs import cst
-from api.help.serializers import UserRelatedField, ProjectRelatedField
-from api import models as mds
-from api.help.RDM import CG
+from RDM.infs import cst
+from RDM.help.serializers import UserRelatedField, ProjectRelatedField
+from RDM import models as mds
+from RDM.help.RDM import CG
 import json
 from django.utils import timezone
 

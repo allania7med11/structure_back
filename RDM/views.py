@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import permissions, viewsets, filters
 from rest_framework.response import Response
-from api.serializers import ISerializer, ProjectSerializer, IUserSerializer
+from RDM.serializers import ISerializer, ProjectSerializer, IUserSerializer
 from .permissions import IsUser, IsProject
 from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
@@ -13,11 +13,11 @@ from rest_framework.decorators import action
 from rest_framework.parsers import JSONParser
 from graph.schema import schema
 from graph.queries import Queries
-from api.help.cl import fRun
-from api.help.copy import Copy
+from RDM.help.cl import fRun
+from RDM.help.copy import Copy
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail, BadHeaderError
-from api import models as mds
+from RDM import models as mds
 
 class CViewSet:
     def __init__(self, name):
