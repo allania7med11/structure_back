@@ -1,0 +1,150 @@
+{
+  "data": [
+    { "name": "Node", "label": "Nodes" },
+    { "name": "Bar", "label": "Bars" },
+    {
+      "label": "Supports",
+      "types": [
+        {
+          "name": "Support",
+          "type": "define",
+          "label": "Define Support",
+          "view": "model_type"
+        },
+        {
+          "name": "Support",
+          "type": "apply",
+          "label": "Apply Support",
+          "view": "model_type"
+        }
+      ]
+    },
+    {
+      "label": "Releases",
+      "types": [
+        {
+          "name": "Release",
+          "type": "define",
+          "label": "Define Release",
+          "view": "model_type"
+        },
+        {
+          "name": "Release",
+          "type": "apply",
+          "label": "Apply Release",
+          "view": "model_type"
+        }
+      ]
+    },
+    { "name": "Material", "label": "Materials" },
+    {
+      "label": "Sections",
+      "types": [
+        {
+          "label": "Define",
+          "types": [
+            {
+              "name": "Section",
+              "type": "Rectangular",
+              "label": "Rectangular",
+              "view": "model_type"
+            },
+            {
+              "name": "Section",
+              "type": "Rectangular_Hollow",
+              "label": "Rectangular_Hollow",
+              "view": "model_type"
+            },
+            {
+              "name": "Section",
+              "type": "Circular",
+              "label": "Circular",
+              "view": "model_type"
+            },
+            {
+              "name": "Section",
+              "type": "Circular_Hollow",
+              "label": "Circular_Hollow",
+              "view": "model_type"
+            },
+            {
+              "name": "Section",
+              "type": "T_Section",
+              "label": "T_Section",
+              "view": "model_type"
+            },
+            {
+              "name": "Section",
+              "type": "I_Section",
+              "label": "I_Section",
+              "view": "model_type"
+            },
+            {
+              "name": "Section",
+              "type": "Custom",
+              "label": "Custom",
+              "view": "model_type"
+            }
+          ]
+        },
+        {
+          "name": "Section",
+          "type": "apply",
+          "label": "Apply Section",
+          "view": "model_type"
+        }
+      ]
+    },
+    {
+      "label": "Point Loads",
+      "types": [
+        {
+          "name": "Nodal_force",
+          "type": "define",
+          "label": "Define PL",
+          "view": "model_type"
+        },
+        {
+          "name": "Nodal_force",
+          "type": "apply",
+          "label": "Apply PL",
+          "view": "model_type"
+        }
+      ]
+    },
+    {
+      "label": "Distributed Loads",
+      "types": [
+        {
+          "label": "Define",
+          "types": [
+            {
+              "name": "Distributed_load",
+              "type": "Uniform_load",
+              "label": "Uniform_load",
+              "view": "model_type"
+            },
+            {
+              "name": "Distributed_load",
+              "type": "Trapezoidal_load",
+              "label": "Trapezoidal_load",
+              "view": "model_type"
+            },
+            {
+              "name": "Distributed_load",
+              "type": "Self_weight",
+              "label": "Self_weight",
+              "view": "model_type"
+            }
+          ]
+        },
+        {
+          "name": "Distributed_load",
+          "type": "apply",
+          "label": "Apply DL",
+          "view": "model_type"
+        }
+      ]
+    }
+  ]
+}

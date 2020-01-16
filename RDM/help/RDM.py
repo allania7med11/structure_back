@@ -294,26 +294,26 @@ class Brs:
         self.Ch = np.zeros(3)
 
         Ch_u_l = np.zeros(3)
-        for c in Br.dls.filter(Axes="L", type="Uniform_Load"):
+        for c in Br.dls.filter(Axes="L", type="Uniform_load"):
             ch = c.features
             Ch_u_l = Ch_u_l + np.array([ch['PX'], ch['PZ'], ch['MY']])
         self.Ch = self.Ch + Ch_u_l
         Ch_u_g = np.zeros(3)
-        for c in Br.dls.filter(Axes="G", type="Uniform_Load"):
+        for c in Br.dls.filter(Axes="G", type="Uniform_load"):
             ch = c.features
             Ch_u_g = Ch_u_g + np.array([ch['PX'], ch['PZ'], ch['MY']])
 
         self.Ch = self.Ch + dt(self.G, tr(Ch_u_g))
 
         Ch_t_l = np.zeros((3, 2))
-        for c in Br.dls.filter(Axes="L", type="Trapezoidal_Load"):
+        for c in Br.dls.filter(Axes="L", type="Trapezoidal_load"):
             ch = c.features
             Ch_t_l = Ch_t_l + \
                 np.array([[ch['PX1'], ch['PX2']], [ch['PZ1'],
                                                    ch['PZ2']], [ch['MY1'], ch['MY2']]])
         self.Ch = self.Ch + fcht(Ch_t_l, self.L, x)
         Ch_t_g = np.zeros((3, 2))
-        for c in Br.dls.filter(Axes="G", type="Trapezoidal_Load"):
+        for c in Br.dls.filter(Axes="G", type="Trapezoidal_load"):
             ch = c.features
             Ch_t_g = Ch_t_g + \
                 np.array([[ch['PX1'], ch['PX2']], [ch['PZ1'],

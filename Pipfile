@@ -24,6 +24,9 @@ pylint-django = "*"
 autopep8 = "*"
 ptvsd = "*"
 django-cors-headers = "*"
+pytest-django = "*"
+pytest = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.6"

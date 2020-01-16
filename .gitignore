@@ -8,3 +8,4 @@ test
 # Accept these files in the repository
 !.gitignore
 !.travis.yml
+htmlcov

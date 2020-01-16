@@ -3,5 +3,11 @@
     "python.linting.pylintArgs": [
         "--load-plugins=pylint_django",
         "--errors-only"
-   ]
+],
+"python.testing.pytestArgs": [
+    "RDM"
+],
+"python.testing.unittestEnabled": false,
+"python.testing.nosetestsEnabled": false,
+"python.testing.pytestEnabled": true
 }

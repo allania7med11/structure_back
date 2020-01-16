@@ -3,12 +3,23 @@ from django.contrib import admin
 from django.contrib.postgres.fields import ArrayField, JSONField
 from django.contrib.auth.models import User
 
+def df_preferences(): return {"cdb": ["Distributed Loads", "Section", "Release"], "cdn": ["Point Loads", "Support"]}
+def df_json(): return {}
+def df_ar3(): return [[0] for i in range(3)]
+def df_fl3(): return [0 for i in range(3)]
+def df_ch2(): return ["0" for i in range(2)]
+def df_ch3(): return ["0" for i in range(3)]
+def df_chm2(): return ["0;0" for i in range(2)]
+def df_chm3(): return ["0;0" for i in range(3)]
+
 class Project(models.Model):
     modified_date = models.DateTimeField(auto_now=True)
     name = models.CharField(max_length=200)
     user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='projects')
     auth = models.CharField(max_length=10,default="private",choices=[("private", "private"),("public", "public"),])
     results = models.BooleanField(default=False)
+    preferences = JSONField(default=df_preferences)
+    variables= JSONField(default=df_json)
     class Meta:
         unique_together = (("name","user"),)
     def __str__(self):
@@ -28,13 +39,7 @@ class Support(models.Model):
         y=self.name
         return y
 
-def df_json(): return {}
-def df_ar3(): return [[0] for i in range(3)]
-def df_fl3(): return [0 for i in range(3)]
-def df_ch2(): return ["0" for i in range(2)]
-def df_ch3(): return ["0" for i in range(3)]
-def df_chm2(): return ["0;0" for i in range(2)]
-def df_chm3(): return ["0;0" for i in range(3)]
+
 class Node(models.Model):
     modified_date = models.DateTimeField(auto_now=True)
     project =models.ForeignKey(Project,on_delete=models.CASCADE,related_name='nodes')

@@ -2,6 +2,8 @@ from . import models as mds
 import re
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.decorators import action
+from django.contrib.auth.models import User
+import json
 class Classcst(object):
     lst=["nodes","bars","supports","releases","materials","sections","pls","dls"]
     apply=["supports","releases","sections","pls","dls"]
@@ -58,9 +60,15 @@ class Classcst(object):
             return object_name.objects.get(pk=relayId)
         except ObjectDoesNotExist:
             return otherwise
+   
+    @property
+    def get_default_user(self):
+        return User.objects.get(username=self.project["username"])
+
     @property
     def get_default_project(self):
-        return self.project["model"].objects.get(user__username=self.project["username"],name=self.project["default"])         
+        return self.project["model"].objects.get(user=self.get_default_user, name=self.project["default"])
+
     @property
     def get_Tutorials(self):
         return list( self.project["model"].objects.filter(
@@ -70,5 +78,9 @@ class Classcst(object):
         model=self.models[name]
         project=self.get_default_project
         return model["model"].objects.get(project=project,name=model["default"])    
-    
+    @property
+    def results(self):
+        input_file = open('RDM/json/results.json', 'r')
+        json_decode = json.load(input_file)
+        return json_decode
 cst=Classcst()
