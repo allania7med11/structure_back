@@ -11,3 +11,4 @@ else :
         "app":["corsheaders"],
         "middleware":['corsheaders.middleware.CorsMiddleware'],
         "session":None}
+Test=True

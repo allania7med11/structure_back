@@ -84,9 +84,6 @@ def CG(typ, dn):
     z = sp.Symbol('z')
     w = sp.Symbol('w')
     r = sp.Symbol('r')
-    print("test")
-    print(typ)
-    print(dn)
     if typ == 'Rectangular':
         b, h = dn["b"], dn["h"]
         G = [[-0.5*b, 0.5*b, 0, h]]

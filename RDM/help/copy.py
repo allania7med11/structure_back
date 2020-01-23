@@ -13,7 +13,6 @@ class cCopy(object):
     List=["supports","releases","materials","sections","nodes","bars","pls","dls"]
     def conv(self,project,model,args):
         ds={'project': project}
-        print("model",model,args)
         if model=="sections":
             args.update(CG(args["type"], json.loads(args["features"])))
         for k,v in args.items():
@@ -23,7 +22,6 @@ class cCopy(object):
                 ds[k]=v
             elif k=="features" :
                 ds[k]=json.loads(v)
-        print("ds",ds)
         ins = self.models[model].objects.create(**ds)
         for k in [ki for ki in self.many.keys() if ki in args.keys()]:
             list=[v["name"] for v in  args[k]]
@@ -33,13 +31,10 @@ class cCopy(object):
     def saveCopy(self):
         def fct(slf):
             name= slf.validated_data.pop('name')
-            print("name",name)
             data=slf.context["data"]
             prc=mds.Project.objects.get(id=slf.context["pk"])
             prn=mds.Project.objects.create(name=name,user=prc.user)
-            print(data)
             for model in self.List:
-                print(model)
                 for args in data[model]:
                     instance=self.conv(prn,model,args)
             return prn

@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import permissions, viewsets, filters
 from rest_framework.response import Response
 from RDM.serializers import ISerializer, ProjectSerializer, IUserSerializer
-from .permissions import IsUser, IsProject
+from .permissions import IsUser, IsProject, TestOnly
 from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import serializers
@@ -18,6 +18,7 @@ from RDM.help.copy import Copy
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail, BadHeaderError
 from RDM import models as mds
+
 
 class CViewSet:
     def __init__(self, name):
@@ -51,7 +52,6 @@ class CViewSet:
         retrieve = self.retrieve
         @action(detail=True, methods=['post'])
         def apply(slf, request, pk=None):
-            print(request)
             serializer_class_apply = self.srl.applySerializer
             serializer_apply = serializer_class_apply(
                 data=request.data, context={'request': slf.request, "pk": pk})
@@ -71,7 +71,6 @@ class CViewSet:
             instance = slf.get_object()
             result = schema.execute(Queries.apply(
                 self.name[:-1], self.model["apply"]), variables={'id': instance.id, 'idU': request.user.id},)
-            print(result)
             return Response(result.data[self.name[:-1]])
         return flt
 
@@ -154,7 +153,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
     def run(self, request, pk=None):
         try:
             e = fRun(pk)
-            print(e)
             if not e:
                 return Response({"error": True})
             else:
@@ -174,17 +172,13 @@ class ProjectViewSet(viewsets.ModelViewSet):
     def copy(self, request, pk=None):
         try:
             prc = schema.execute(Queries.copy, variables={'id': pk},)
-            print("prc", prc.data)
             context = {'request': request, "pk": pk,
                        "data": prc.data["project"]}
-            print("context", context)
             serializer_class_copy = Copy.copySerializer
             serializer_copy = serializer_class_copy(
                 data=request.data, context=context)
             if serializer_copy.is_valid():
-                print("serializer_copy", serializer_copy)
                 instance = serializer_copy.save()
-                print("instance", instance)
             return self.retrieve(request, pk)
         except ValidationError as e:
             return Response({"error": e})
@@ -228,3 +222,7 @@ class UserViewSet(viewsets.ModelViewSet):
                 return Response({"error": 'Invalid header found.'})
             return Response({"msg": 'Success'})
         return Response(serializer_contact.errors, status=400)
+    @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated,TestOnly])
+    def delt(self, request, pk=None):
+        request.user.delete()
+        return Response(status=204)

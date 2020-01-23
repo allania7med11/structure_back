@@ -23,7 +23,31 @@ class TestView(TestCase):
         cls.session = cls.client.session
         cls.session.save()
     
-    
+    def typProject(self,name):
+        path = "/api/projects/"
+        response = self.client.post(path,{'name':name})
+        assert response.status_code in [200,201]
+        response = self.client.get(path)
+        assert response.status_code == 200
+        assert Project.objects.filter(**{'name':name}).count() > 0
+        return Project.objects.get(name=name)
+
+    def test_project_open_owner(self):
+        self.client.login(username="user1", password='Puser1')
+        self.project=self.typProject("testProject")
+        path = "/api/projects/"
+        response = self.client.get(path)
+        assert response.status_code == 200
+        self.DataProject=cst.DataProject(self.project.id)
+        for model in cst.lst:
+            path = "/api/{}/".format(model)  
+            inf=cst.models[model]
+            dts=self.DataProject[model]["define"](1)
+            for dt in dts:
+                dt.update({"project":self.project.id})
+                response = self.client.post(path,dt)
+                assert response.status_code in [200,201]
+                assert inf["model"].objects.filter(project=self.project,name=dt["name"]).count() > 0
     def test_run(self):
         user = cst.get_default_user
         self.client.login(username="allania7med11", password='Ahmed.va.2000')

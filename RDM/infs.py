@@ -52,7 +52,6 @@ class Classcst(object):
             L.extend(list(range(min(s), max(s)+1)))
         L = list(set(L))
         L.sort()
-        print({"List":L})
         return L
     @staticmethod
     def get_object(object_name, relayId, otherwise=None):
@@ -83,4 +82,43 @@ class Classcst(object):
         input_file = open('RDM/json/results.json', 'r')
         json_decode = json.load(input_file)
         return json_decode
+    def get_model(self, project, model, name):
+        model = self.models[model]
+        default = self.get_default_project
+        obj=model["model"].objects.get(project__in=[default, project], name=name)
+        return obj.id
+
+    def DataProject(self, id):
+        project = self.project["model"].objects.get(id=id)
+        dt = {}
+        dt["nodes"] = {"define": lambda x: [
+            {'name': 1, 'X': 0, 'Z': 0}, {'name': 2, 'X': 4, 'Z': 0}]}
+        dt["bars"] = {"define": lambda x: [{'name': 1, 'N1': self.get_model(
+            project, "nodes", 1), 'N2': self.get_model(project, "nodes", 2)}]}
+        dt["supports"] = {
+            "define": lambda x: [{'name': "Fix", 'UX': True, 'UZ': True, 'RY': True}],
+            "apply": lambda x: [{'name': self.get_model(project, "supports", "Fix"), "List": "*", 'Submit':"apply"},{'name': self.get_model(project, "supports", "Fix"), "List": "1", 'Submit':"remove"}]
+        }
+        dt["releases"] = {
+            "define": lambda x: [{'name': "NN", 'UX1': False, 'UZ1': False, 'RY1': False, 'UX2': False, 'UZ2': False,
+                                  'RY2': False}],
+            "apply": lambda x: [{'name': self.get_model(project, "releases", "NN"), "List": "1", 'Submit':"apply"}]
+        }
+        dt["materials"] = {"define": lambda x: [
+            {'name': 'm1', 'YM': 200000, 'Density': 0}]}
+        dt["sections"] = {
+            "define": lambda x: [
+                {'type':"Rectangular",'name': "Rc", 'material': self.get_model(project, "materials", "m1"),"features":json.dumps({'b': 20, 'h': 40})},
+                ],
+            "apply": lambda x: [{'name': self.get_model(project, "sections", "Rc"), "List": "1", 'Submit':"apply"}]
+        }
+        dt["pls"] = {
+            "define": lambda x: [{'name': "P", 'FX':0, 'FZ':-10, 'CY':0}],
+            "apply": lambda x: [{'name': self.get_model(project, "pls", "P"), "List": "2", 'Submit':"apply"}]
+        }
+        dt["dls"] = {
+            "define": lambda x: [{'type':"Uniform_load",'name': "UL", "Axes":"G","features":json.dumps({'PX': 0, 'PZ': -10, 'MY': 0})}],
+            "apply": lambda x: [{'name': self.get_model(project, "dls", "UL"), "List": "*", 'Submit':"apply"},{'name': self.get_model(project, "dls", "UL"), "List": "1", 'Submit':"remove"}]
+        }
+        return dt
 cst=Classcst()

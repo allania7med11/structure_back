@@ -1,6 +1,11 @@
 from rest_framework import permissions
 from . import models as mds
+from server import env
 
+class TestOnly(permissions.BasePermission):
+    message = 'permission denied'
+    def has_permission(self, request, view):
+        return env.Test
 class IsUser(permissions.BasePermission):
     message = 'You don\'t own this project'
     def has_object_permission(self, request, view, obj): 
