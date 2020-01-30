@@ -63,6 +63,8 @@ class CSerializer:
     @property
     def validate_features(self):
         def ftn(slf, value):
+            if type(value) is dict:
+                return value
             return json.loads(value)
         return ftn
 
