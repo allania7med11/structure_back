@@ -9,7 +9,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from .infs import cst
 from . import models as mds
-from rest_framework.decorators import action
+from rest_framework.decorators import action, permission_classes
 from rest_framework.parsers import JSONParser
 from graph.schema import schema
 from graph.queries import Queries
@@ -18,8 +18,9 @@ from RDM.help.copy import Copy
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail, BadHeaderError
 from RDM import models as mds
-
-
+from server import env
+from django.db.models import Q
+from rest_framework import views, permissions
 class CViewSet:
     def __init__(self, name):
         self.name = name
@@ -36,6 +37,8 @@ class CViewSet:
     def get_queryset(self):
         def flt(slf, pk=None):
             queryset = self.model["model"].objects.filter(project__user=slf.request.user)
+            if "apply" in slf.action:
+                queryset = self.model["model"].objects.filter(Q(project__user=slf.request.user) | Q(project=cst.get_default_project))
             return queryset
         return flt
 
@@ -52,9 +55,10 @@ class CViewSet:
         retrieve = self.retrieve
         @action(detail=True, methods=['post'])
         def apply(slf, request, pk=None):
+            instance = slf.get_object()
             serializer_class_apply = self.srl.applySerializer
             serializer_apply = serializer_class_apply(
-                data=request.data, context={'request': slf.request, "pk": pk})
+                data=request.data, context={'request': slf.request, "pk": instance.id})
             if serializer_apply.is_valid():
                 serializer_apply.save()
                 return retrieve(slf, request, pk=None)
@@ -98,7 +102,13 @@ IViewSet = {}
 for k in cst.lst:
     IViewSet[k] = CViewSet(k)
 
-
+def method_permission_classes(classes):
+    def decorator(func):
+        def decorated_func(self, *args, **kwargs):
+            self.permission_classes = classes
+            return func(self, *args, **kwargs)
+        return decorated_func
+    return decorator
 class ProjectViewSet(viewsets.ModelViewSet):
     serializer_class = ProjectSerializer
     queryset = mds.Project.objects.all()
@@ -107,7 +117,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
     filterset_fields = ['auth']
     ordering_fields = ['auth']
     ordering = ['auth']
-
     def get_serializer_class(self):
         if self.action == "copy":
             return Copy.copySerializer
@@ -132,9 +141,10 @@ class ProjectViewSet(viewsets.ModelViewSet):
             for field in cst.default:
                 project[field].extend(default[field])
         return project
-
+    
     def retrieve(self, request, pk=None):
-        project = self.get_project(pk)
+        obj = self.get_object()
+        project = self.get_project(obj.id)
         return Response(project)
 
     @action(detail=False)
@@ -151,18 +161,19 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     @action(detail=True)
     def run(self, request, pk=None):
+        obj = self.get_object()
         try:
-            e = fRun(pk)
+            e = fRun(obj.id)
             if not e:
                 return Response({"error": True})
             else:
-                projectI =mds.Project.objects.get(id = pk)
+                projectI =mds.Project.objects.get(id = obj.id)
                 projectI.results = True
                 projectI.save()
-                result = schema.execute(Queries.results, variables={'id': pk},)
+                result = schema.execute(Queries.results, variables={'id': obj.id},)
                 project = result.data["project"]
                 default = result.data["default"]
-                if pk != '1':
+                if obj.id != '1':
                     project["sections"].extend(default["sections"])
                 return Response(project)
         except ValidationError as e:
@@ -170,16 +181,17 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'])
     def copy(self, request, pk=None):
+        obj = self.get_object()
         try:
-            prc = schema.execute(Queries.copy, variables={'id': pk},)
-            context = {'request': request, "pk": pk,
+            prc = schema.execute(Queries.copy, variables={'id': obj.id},)
+            context = {'request': request, "pk": obj.id,
                        "data": prc.data["project"]}
             serializer_class_copy = Copy.copySerializer
             serializer_copy = serializer_class_copy(
                 data=request.data, context=context)
             if serializer_copy.is_valid():
                 instance = serializer_copy.save()
-            return self.retrieve(request, pk)
+            return self.retrieve(request, obj.id)
         except ValidationError as e:
             return Response({"error": e})
 
@@ -222,7 +234,8 @@ class UserViewSet(viewsets.ModelViewSet):
                 return Response({"error": 'Invalid header found.'})
             return Response({"msg": 'Success'})
         return Response(serializer_contact.errors, status=400)
-    @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated,TestOnly])
+    @action(detail=False, methods=['get'], permission_classes=[TestOnly])
     def delt(self, request, pk=None):
-        request.user.delete()
+        if User.objects.filter(username=env.TestInfo["user"]).exists():
+            User.objects.filter(username=env.TestInfo["user"]).delete()
         return Response(status=204)

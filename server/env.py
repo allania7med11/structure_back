@@ -12,3 +12,4 @@ else :
         "middleware":['corsheaders.middleware.CorsMiddleware'],
         "session":None}
 Test=True
+TestInfo= { "user":"user1" }

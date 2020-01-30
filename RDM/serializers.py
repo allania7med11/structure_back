@@ -60,6 +60,11 @@ class CSerializer:
             project.save()
             return instance
         return fct
+    @property
+    def validate_features(self):
+        def ftn(slf, value):
+            return json.loads(value)
+        return ftn
 
     @property
     def saveModel(self):
@@ -105,6 +110,7 @@ class CSerializer:
                     queryset=md["model"].objects.all())
         if "features" in self.model["fields"]:
             data['features'] = serializers.JSONField()
+            data['validate_features'] = self.validate_features
         return type(self.model["name"]+"Serializer", (serializers.ModelSerializer,), data)
 
     @property

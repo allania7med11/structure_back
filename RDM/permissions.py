@@ -1,7 +1,7 @@
 from rest_framework import permissions
 from . import models as mds
 from server import env
-
+from .infs import cst
 class TestOnly(permissions.BasePermission):
     message = 'permission denied'
     def has_permission(self, request, view):
@@ -16,6 +16,8 @@ class IsUser(permissions.BasePermission):
 class IsProject(permissions.BasePermission):
     message = 'You don\'t own this project'
     def has_object_permission(self, request, view, obj):
-        return obj.project.user == request.user
+        if obj.project.user == request.user:
+            return True
+        return obj.project == cst.get_default_project
        
         
