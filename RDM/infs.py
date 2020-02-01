@@ -117,7 +117,7 @@ class Classcst(object):
             "apply": lambda x: [{'name': self.get_model(project, "pls", "P"), "List": "2", 'Submit':"apply"}]
         }
         dt["dls"] = {
-            "define": lambda x: [{'type':"Uniform_load",'name': "UL", "Axes":"G","features":json.dumps({'PX': 0, 'PZ': -10, 'MY': 0})}],
+            "define": lambda x: [{'type':"Uniform_Load",'name': "UL", "Axes":"G","features":json.dumps({'PX': 0, 'PZ': -10, 'MY': 0})}],
             "apply": lambda x: [{'name': self.get_model(project, "dls", "UL"), "List": "*", 'Submit':"apply"},{'name': self.get_model(project, "dls", "UL"), "List": "1", 'Submit':"remove"}]
         }
         return dt

@@ -291,12 +291,12 @@ class Brs:
         self.Ch = np.zeros(3)
 
         Ch_u_l = np.zeros(3)
-        for c in Br.dls.filter(Axes="L", type="Uniform_load"):
+        for c in Br.dls.filter(Axes="L", type="Uniform_Load"):
             ch = c.features
             Ch_u_l = Ch_u_l + np.array([ch['PX'], ch['PZ'], ch['MY']])
         self.Ch = self.Ch + Ch_u_l
         Ch_u_g = np.zeros(3)
-        for c in Br.dls.filter(Axes="G", type="Uniform_load"):
+        for c in Br.dls.filter(Axes="G", type="Uniform_Load"):
             ch = c.features
             Ch_u_g = Ch_u_g + np.array([ch['PX'], ch['PZ'], ch['MY']])
 

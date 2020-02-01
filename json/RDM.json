@@ -1257,7 +1257,7 @@
     "modified_date": "2020-01-14T21:24:24.742Z",
     "project": 2,
     "name": "UL20",
-    "type": "Uniform_load",
+    "type": "Uniform_Load",
     "Axes": "G",
     "features": {
       "MY": 0,
@@ -1276,7 +1276,7 @@
     "modified_date": "2020-01-14T21:24:25.863Z",
     "project": 4,
     "name": "q",
-    "type": "Uniform_load",
+    "type": "Uniform_Load",
     "Axes": "G",
     "features": {
       "MY": 0,
@@ -1295,7 +1295,7 @@
     "modified_date": "2020-01-14T21:24:26.296Z",
     "project": 5,
     "name": "q1",
-    "type": "Uniform_load",
+    "type": "Uniform_Load",
     "Axes": "G",
     "features": {
       "MY": 0,
@@ -1314,7 +1314,7 @@
     "modified_date": "2020-01-14T21:24:26.318Z",
     "project": 5,
     "name": "q2",
-    "type": "Uniform_load",
+    "type": "Uniform_Load",
     "Axes": "G",
     "features": {
       "MY": 0,

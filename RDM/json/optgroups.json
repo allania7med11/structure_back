@@ -119,19 +119,19 @@
           "label": "Define",
           "types": [
             {
-              "name": "Distributed_load",
-              "type": "Uniform_load",
-              "label": "Uniform_load",
+              "name": "Distributed_Load",
+              "type": "Uniform_Load",
+              "label": "Uniform_Load",
               "view": "model_type"
             },
             {
-              "name": "Distributed_load",
-              "type": "Trapezoidal_load",
-              "label": "Trapezoidal_load",
+              "name": "Distributed_Load",
+              "type": "Trapezoidal_Load",
+              "label": "Trapezoidal_Load",
               "view": "model_type"
             },
             {
-              "name": "Distributed_load",
+              "name": "Distributed_Load",
               "type": "Self_weight",
               "label": "Self_weight",
               "view": "model_type"
@@ -139,7 +139,7 @@
           ]
         },
         {
-          "name": "Distributed_load",
+          "name": "Distributed_Load",
           "type": "apply",
           "label": "Apply DL",
           "view": "model_type"
