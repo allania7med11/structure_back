@@ -4,7 +4,7 @@ if Docker==True:
     clientUrl="http://localhost"
     cors={"list":[],"app":[],"middleware":[],"session":'Lax'}
 else :
-    database={'NAME': 'rdm2','USER': 'myuser','PASSWORD': 'mypass', 'HOST': 'localhost','PORT': 5432}
+    database={'NAME': 'structure_7_2_2020','USER': 'myuser','PASSWORD': 'mypass', 'HOST': 'localhost','PORT': 5432}
     clientUrl="http://localhost"
     cors={
         "list":["http://localhost"],
