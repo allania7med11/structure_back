@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/home/ah/.local/share/virtualenvs/server--XvHRMwz/bin/python",
+    "python.pythonPath": "../.env/bin/python",
     "python.linting.pylintArgs": [
         "--load-plugins=pylint_django",
         "--errors-only"
