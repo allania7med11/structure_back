@@ -3,7 +3,7 @@
 *.pyc
 *~
 .*
-env
+.env
 test
 # Accept these files in the repository
 !.gitignore

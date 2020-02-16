@@ -27,6 +27,7 @@ django-cors-headers = "*"
 pytest-django = "*"
 pytest = "*"
 pytest-cov = "*"
+mixer = "*"
 
 [requires]
 python_version = "3.6"
