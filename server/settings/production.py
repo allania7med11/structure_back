@@ -1,6 +1,6 @@
 from .base import *
 DEBUG = False
-ALLOWED_HOSTS = ['effectivewebapp.com',"178.62.22.165","www.effectivewebapp.com"]
+ALLOWED_HOSTS = ['effectivewebapp.com',"206.189.117.238","www.effectivewebapp.com"]
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
