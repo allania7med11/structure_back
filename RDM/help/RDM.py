@@ -303,14 +303,14 @@ class Brs:
         self.Ch = self.Ch + dt(self.G, tr(Ch_u_g))
 
         Ch_t_l = np.zeros((3, 2))
-        for c in Br.dls.filter(Axes="L", type="Trapezoidal_load"):
+        for c in Br.dls.filter(Axes="L", type="Trapezoidal_Load"):
             ch = c.features
             Ch_t_l = Ch_t_l + \
                 np.array([[ch['PX1'], ch['PX2']], [ch['PZ1'],
                                                    ch['PZ2']], [ch['MY1'], ch['MY2']]])
         self.Ch = self.Ch + fcht(Ch_t_l, self.L, x)
         Ch_t_g = np.zeros((3, 2))
-        for c in Br.dls.filter(Axes="G", type="Trapezoidal_load"):
+        for c in Br.dls.filter(Axes="G", type="Trapezoidal_Load"):
             ch = c.features
             Ch_t_g = Ch_t_g + \
                 np.array([[ch['PX1'], ch['PX2']], [ch['PZ1'],
@@ -319,7 +319,7 @@ class Brs:
  
         self.A = gf(Br, "Section__Ax")
         Ch_pp = 0
-        for c in Br.dls.filter(type="Self_weight"):
+        for c in Br.dls.filter(type="Self_Weight"):
             ch = c.features
             Ch_pp = Ch_pp + ch['Factor']
         Ch_pp_m = Ch_pp * gf(Br, "Section__material__Density") * \

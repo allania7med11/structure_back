@@ -11,4 +11,4 @@ DATABASES = {
         'PORT': '',
     }
 }
-LOGIN_REDIRECT_URL = "legacy.effectivewebapp.com" + '/projects/'
+LOGIN_REDIRECT_URL = '/projects/'

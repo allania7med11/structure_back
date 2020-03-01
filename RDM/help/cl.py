@@ -24,6 +24,12 @@ def fRun(id_pr):
     SO1 = sp.simplify(dt(IAt, Bt))
     SO = [j for j in SO1]
     Vr = dict(zip(IN, SO))
+    project = Project.objects.get(pk=id_pr)
+    variables={}
+    for ky, vl in Vr.items():
+        variables[str(ky)]=str(round(vl,13))
+    project.variables=variables
+    project.save()
     for ky, vl in br.items():
         i = -1
         for v in vl.Qg:

@@ -50,9 +50,14 @@ class TestView(TestCase):
                 assert inf["model"].objects.filter(project=self.project,name=dt["name"]).count() > 0
     def test_run(self):
         user = cst.get_default_user
+        results = cst.results
         self.client.login(username="allania7med11", password='Ahmed.va.2000')
         for tutorial in cst.project["Tutorials"]:
             project = Project.objects.get(user=user, name=tutorial)
             path = "/api/projects/{}/run/".format(project.id)  
             response = self.client.get(path)
             assert response.status_code == 200
+            project = Project.objects.get(user=user, name=tutorial)
+            print("project.variables",project.variables)
+            print("cst.results[tutorial]",cst.results[tutorial])
+            assert project.variables == cst.results[tutorial]

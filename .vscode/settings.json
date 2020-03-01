@@ -1,6 +1,6 @@
 
 {
-    "python.pythonPath": "/home/ah/.local/share/virtualenvs/webserver-dDr7uNgw",
+    "python.pythonPath": "/home/ah/website/structureFull/web/.env/bin/python",
     "python.linting.pylintArgs": [
         "--load-plugins=pylint_django",
         "--errors-only"
