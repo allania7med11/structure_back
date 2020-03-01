@@ -46,8 +46,7 @@ INSTALLED_APPS = [
     'RDM',
     'myclient',
     'social_django', # add this 
-    'core', # add this
-    'fixture_magic'
+    'core' # add this
 ]
 
 MIDDLEWARE = [
