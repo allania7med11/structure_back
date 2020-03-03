@@ -159,25 +159,14 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     ]
 
-SOCIAL_AUTH_FACEBOOK_KEY = 488035381788628        # App ID
-SOCIAL_AUTH_FACEBOOK_SECRET = "33e068b3d062e625f06e59131118935d"  # App Secret
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', 'user_link'] # add this
-SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {       # add this
-    'fields': 'id, name, email, picture.type(large), link'
-}
-SOCIAL_AUTH_FACEBOOK_EXTRA_DATA = [                 # add this
-    ('name', 'name'),
-    ('email', 'email'),
-    ('picture', 'picture'),
-    ('link', 'profile_url'),
-]
+
 
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '565983255094-hhc6rjc7pr2buo80g98np6fg9ecq9246.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '0oE-rGo3h0dPvsHQ9M6dS1jA'
 
-SOCIAL_AUTH_FACEBOOK_KEY = 488035381788628        # App ID
-SOCIAL_AUTH_FACEBOOK_SECRET = "33e068b3d062e625f06e59131118935d"  # App Secret
+SOCIAL_AUTH_FACEBOOK_KEY = 642560686562639        # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = "582ae889d77decc2fd5d7a44690c2bf8"  # App Secret
 
 SOCIAL_AUTH_TWITTER_KEY = "qjhqGhOZpLIlZ4rlkck0GMRAo"        # App ID
 SOCIAL_AUTH_TWITTER_SECRET = "NW9yuEp25vuEwsoDL8RSZLYYuNTptcsGxFGS75EtVvce41bDRG"  # App Secret
