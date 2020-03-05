@@ -58,6 +58,4 @@ class TestView(TestCase):
             response = self.client.get(path)
             assert response.status_code == 200
             project = Project.objects.get(user=user, name=tutorial)
-            print("project.variables",project.variables)
-            print("cst.results[tutorial]",cst.results[tutorial])
             assert project.variables == cst.results[tutorial]
