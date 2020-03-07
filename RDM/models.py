@@ -180,23 +180,3 @@ class Dl(models.Model):
         return y
 
 
-class Task(models.Model):
-    isDone = models.BooleanField()
-    name = models.CharField(max_length=100)
-    description = models.TextField()
-
-    def __str__(self):
-        return self.name
-
-
-@admin.register(Task)
-class TaskAdmin(admin.ModelAdmin):
-  	pass
-
-""" 
-choices=[("RCT", "Rectangular"),("RCTH", "Rectangular Hollow"),
-                 ("CRC", "Circular"),("CRCH", "Circular Hollow"),
-                 ("TSC", "T Section"),("ISC", "I Section"),
-                 ("CST", "Custom"),
-                 ]
-                  """
