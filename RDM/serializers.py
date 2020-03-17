@@ -141,7 +141,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 class CUserSerializer:
     model = User
-    fields = ('url', 'id', 'username')
+    fields = ('url', 'id', 'username', 'has_usable_password')
     @property
     def fSerializer(self):
         data = {"Meta": type("Meta", (object,), {
