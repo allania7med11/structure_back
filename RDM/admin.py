@@ -30,7 +30,7 @@ class MaterialAdmin(admin.ModelAdmin):
     list_display = ('id', 'project', 'name', 'YM', "Density")
 
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('id','name','user')
+    list_display = ('id','name', 'user',"modified_date")
 admin.site.register(Node, NodeAdmin)
 admin.site.register(Bar, BarAdmin)
 admin.site.register(Support, SupportAdmin)
