@@ -141,16 +141,17 @@ GRAPHENE_DJANGO_EXTRAS = {
         'CACHE_ACTIVE': True,
         'CACHE_TIMEOUT': 300    # seconds
     }
-# SEND_GRID_API_KEY = "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"
-SEND_GRID_API_KEY = "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"
-MAILER_LIST = ['allania7med11@gmail.com']
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'allania7med11'
-EMAIL_HOST_PASSWORD = '25041991.Avril'
+
+# Email Setting
+
+# https://myaccount.google.com/apppasswords
+# https://accounts.google.com/b/0/DisplayUnlockCaptcha
+# https://myaccount.google.com/lesssecureapps
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = "587"
+EMAIL_HOST_USER = "allania7med11@gmail.com"
+EMAIL_HOST_PASSWORD = "kbcqyratmlwzxhyy"
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'admin@effectivewebapp.com'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 
 AUTHENTICATION_BACKENDS = [

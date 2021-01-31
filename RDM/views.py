@@ -229,6 +229,7 @@ class UserViewSet(viewsets.ModelViewSet):
             subject = serializer_contact.validated_data['subject']
             from_email = serializer_contact.validated_data['from_email']
             message = serializer_contact.validated_data['message']
+            subject = f'from:{from_email}-{subject}'
             try:
                 send_mail(subject, message, from_email,
                           ['allania7med11@gmail.com'])
