@@ -47,11 +47,12 @@ INSTALLED_APPS = [
     "django_filters",
     "rest_framework",
     "graphene_django",
+    'django_extensions',
+    "social_django",  # add this
+    "core",  # add this
     "accounts",
     "RDM",
     "myclient",
-    "social_django",  # add this
-    "core",  # add this
 ]
 
 MIDDLEWARE = [
