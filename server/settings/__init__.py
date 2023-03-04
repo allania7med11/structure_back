@@ -174,10 +174,8 @@ SOCIAL_AUTH_FACEBOOK_SECRET = env("SOCIAL_AUTH_FACEBOOK_SECRET", default="")
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 LOGOUT_REDIRECT_URL = "/accounts/login/"
-DEBUG = False
-ALLOWED_HOSTS = env.list(
-    "DJANGO_ALLOWED_HOSTS", default=["*"]
-)
+DEBUG = env.bool("DJANGO_DEBUG", default=False)
+ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["*"])
 
 DATABASES = {
     "default": {
@@ -190,5 +188,3 @@ DATABASES = {
     }
 }
 LOGIN_REDIRECT_URL = "/projects/"
-
-
