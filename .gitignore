@@ -11,3 +11,4 @@ test
 htmlcov
 server/settings/local.py
 notes
+venv
