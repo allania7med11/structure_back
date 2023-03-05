@@ -5,8 +5,8 @@
   "fields": {
     "modified_date": "2020-01-14T21:24:24.030Z",
     "name": "Default",
-    "auth": "private",
     "user": 1,
+    "auth": "private",
     "results": false,
     "preferences": {
       "cdb": [
@@ -28,8 +28,8 @@
   "fields": {
     "modified_date": "2020-01-14T21:24:24.435Z",
     "name": "project 1",
-    "auth": "public",
     "user": 1,
+    "auth": "public",
     "results": false,
     "preferences": {
       "cdb": [
@@ -51,8 +51,8 @@
   "fields": {
     "modified_date": "2020-01-14T21:24:24.772Z",
     "name": "Truss Structure",
-    "auth": "public",
     "user": 1,
+    "auth": "public",
     "results": false,
     "preferences": {
       "cdb": [
@@ -74,8 +74,8 @@
   "fields": {
     "modified_date": "2020-01-14T21:24:25.361Z",
     "name": "Frame Structure",
-    "auth": "public",
     "user": 1,
+    "auth": "public",
     "results": false,
     "preferences": {
       "cdb": [
@@ -97,8 +97,8 @@
   "fields": {
     "modified_date": "2020-01-14T21:24:25.912Z",
     "name": "Beams with Internal Hinges",
-    "auth": "public",
     "user": 1,
+    "auth": "public",
     "results": false,
     "preferences": {
       "cdb": [
@@ -475,6 +475,143 @@
   }
 },
 {
+  "model": "RDM.pl",
+  "pk": 1,
+  "fields": {
+    "modified_date": "2020-01-14T21:24:25.275Z",
+    "project": 3,
+    "name": "Q",
+    "FX": 0.0,
+    "FZ": -0.018,
+    "CY": 0.0,
+    "nodes": [
+      3
+    ]
+  }
+},
+{
+  "model": "RDM.pl",
+  "pk": 2,
+  "fields": {
+    "modified_date": "2020-01-14T21:24:25.307Z",
+    "project": 3,
+    "name": "P",
+    "FX": 0.0,
+    "FZ": -0.036,
+    "CY": 0.0,
+    "nodes": [
+      4,
+      5
+    ]
+  }
+},
+{
+  "model": "RDM.pl",
+  "pk": 3,
+  "fields": {
+    "modified_date": "2020-01-14T21:24:25.808Z",
+    "project": 4,
+    "name": "P",
+    "FX": 0.0,
+    "FZ": -0.02,
+    "CY": 0.0,
+    "nodes": [
+      13,
+      14
+    ]
+  }
+},
+{
+  "model": "RDM.pl",
+  "pk": 4,
+  "fields": {
+    "modified_date": "2020-01-14T21:24:25.829Z",
+    "project": 4,
+    "name": "Q",
+    "FX": -0.01,
+    "FZ": 0.0,
+    "CY": 0.0,
+    "nodes": [
+      15
+    ]
+  }
+},
+{
+  "model": "RDM.pl",
+  "pk": 5,
+  "fields": {
+    "modified_date": "2020-01-14T21:24:26.218Z",
+    "project": 5,
+    "name": "P",
+    "FX": 0.04,
+    "FZ": 0.0,
+    "CY": 0.0,
+    "nodes": [
+      17
+    ]
+  }
+},
+{
+  "model": "RDM.release",
+  "pk": 1,
+  "fields": {
+    "modified_date": "2020-01-14T21:24:24.376Z",
+    "project": 1,
+    "name": "None",
+    "UX1": false,
+    "UZ1": false,
+    "RY1": false,
+    "UX2": false,
+    "UZ2": false,
+    "RY2": false
+  }
+},
+{
+  "model": "RDM.release",
+  "pk": 2,
+  "fields": {
+    "modified_date": "2020-01-14T21:24:24.384Z",
+    "project": 1,
+    "name": "F-P",
+    "UX1": false,
+    "UZ1": false,
+    "RY1": false,
+    "UX2": false,
+    "UZ2": false,
+    "RY2": true
+  }
+},
+{
+  "model": "RDM.release",
+  "pk": 3,
+  "fields": {
+    "modified_date": "2020-01-14T21:24:24.396Z",
+    "project": 1,
+    "name": "P-F",
+    "UX1": false,
+    "UZ1": false,
+    "RY1": true,
+    "UX2": false,
+    "UZ2": false,
+    "RY2": false
+  }
+},
+{
+  "model": "RDM.release",
+  "pk": 4,
+  "fields": {
+    "modified_date": "2020-01-14T21:24:24.408Z",
+    "project": 1,
+    "name": "P-P",
+    "UX1": false,
+    "UZ1": false,
+    "RY1": true,
+    "UX2": false,
+    "UZ2": false,
+    "RY2": true
+  }
+},
+{
   "model": "RDM.material",
   "pk": 1,
   "fields": {
@@ -614,66 +751,6 @@
   }
 },
 {
-  "model": "RDM.release",
-  "pk": 1,
-  "fields": {
-    "modified_date": "2020-01-14T21:24:24.376Z",
-    "project": 1,
-    "name": "None",
-    "UX1": false,
-    "UZ1": false,
-    "RY1": false,
-    "UX2": false,
-    "UZ2": false,
-    "RY2": false
-  }
-},
-{
-  "model": "RDM.release",
-  "pk": 2,
-  "fields": {
-    "modified_date": "2020-01-14T21:24:24.384Z",
-    "project": 1,
-    "name": "F-P",
-    "UX1": false,
-    "UZ1": false,
-    "RY1": false,
-    "UX2": false,
-    "UZ2": false,
-    "RY2": true
-  }
-},
-{
-  "model": "RDM.release",
-  "pk": 3,
-  "fields": {
-    "modified_date": "2020-01-14T21:24:24.396Z",
-    "project": 1,
-    "name": "P-F",
-    "UX1": false,
-    "UZ1": false,
-    "RY1": true,
-    "UX2": false,
-    "UZ2": false,
-    "RY2": false
-  }
-},
-{
-  "model": "RDM.release",
-  "pk": 4,
-  "fields": {
-    "modified_date": "2020-01-14T21:24:24.408Z",
-    "project": 1,
-    "name": "P-P",
-    "UX1": false,
-    "UZ1": false,
-    "RY1": true,
-    "UX2": false,
-    "UZ2": false,
-    "RY2": true
-  }
-},
-{
   "model": "RDM.bar",
   "pk": 1,
   "fields": {
@@ -682,8 +759,8 @@
     "name": 1,
     "N1": 1,
     "N2": 2,
-    "Section": 2,
     "Release": 1,
+    "Section": 2,
     "L": 0.0,
     "Ch": "[\"0\", \"0\", \"0\"]",
     "Qg": "[\"0.0\", \"0.0\", \"0.0\"]",
@@ -707,8 +784,8 @@
     "name": 1,
     "N1": 3,
     "N2": 4,
-    "Section": 3,
     "Release": 4,
+    "Section": 3,
     "L": 0.0,
     "Ch": "[\"0\", \"0\", \"0\"]",
     "Qg": "[\"0.0\", \"0.0\", \"0.0\"]",
@@ -732,8 +809,8 @@
     "name": 2,
     "N1": 4,
     "N2": 5,
-    "Section": 3,
     "Release": 4,
+    "Section": 3,
     "L": 0.0,
     "Ch": "[\"0\", \"0\", \"0\"]",
     "Qg": "[\"0.0\", \"0.0\", \"0.0\"]",
@@ -757,8 +834,8 @@
     "name": 3,
     "N1": 5,
     "N2": 6,
-    "Section": 3,
     "Release": 4,
+    "Section": 3,
     "L": 0.0,
     "Ch": "[\"0\", \"0\", \"0\"]",
     "Qg": "[\"0.0\", \"0.0\", \"0.0\"]",
@@ -782,8 +859,8 @@
     "name": 4,
     "N1": 4,
     "N2": 7,
-    "Section": 3,
     "Release": 4,
+    "Section": 3,
     "L": 0.0,
     "Ch": "[\"0\", \"0\", \"0\"]",
     "Qg": "[\"0.0\", \"0.0\", \"0.0\"]",
@@ -807,8 +884,8 @@
     "name": 5,
     "N1": 5,
     "N2": 8,
-    "Section": 3,
     "Release": 4,
+    "Section": 3,
     "L": 0.0,
     "Ch": "[\"0\", \"0\", \"0\"]",
     "Qg": "[\"0.0\", \"0.0\", \"0.0\"]",
@@ -832,8 +909,8 @@
     "name": 6,
     "N1": 3,
     "N2": 7,
-    "Section": 3,
     "Release": 4,
+    "Section": 3,
     "L": 0.0,
     "Ch": "[\"0\", \"0\", \"0\"]",
     "Qg": "[\"0.0\", \"0.0\", \"0.0\"]",
@@ -857,8 +934,8 @@
     "name": 7,
     "N1": 7,
     "N2": 5,
-    "Section": 3,
     "Release": 4,
+    "Section": 3,
     "L": 0.0,
     "Ch": "[\"0\", \"0\", \"0\"]",
     "Qg": "[\"0.0\", \"0.0\", \"0.0\"]",
@@ -882,8 +959,8 @@
     "name": 8,
     "N1": 7,
     "N2": 8,
-    "Section": 3,
     "Release": 4,
+    "Section": 3,
     "L": 0.0,
     "Ch": "[\"0\", \"0\", \"0\"]",
     "Qg": "[\"0.0\", \"0.0\", \"0.0\"]",
@@ -907,8 +984,8 @@
     "name": 9,
     "N1": 8,
     "N2": 6,
-    "Section": 3,
     "Release": 4,
+    "Section": 3,
     "L": 0.0,
     "Ch": "[\"0\", \"0\", \"0\"]",
     "Qg": "[\"0.0\", \"0.0\", \"0.0\"]",
@@ -932,8 +1009,8 @@
     "name": 1,
     "N1": 9,
     "N2": 13,
-    "Section": 4,
     "Release": 1,
+    "Section": 4,
     "L": 0.0,
     "Ch": "[\"0\", \"0\", \"0\"]",
     "Qg": "[\"0.0\", \"0.0\", \"0.0\"]",
@@ -957,8 +1034,8 @@
     "name": 2,
     "N1": 13,
     "N2": 10,
-    "Section": 4,
     "Release": 1,
+    "Section": 4,
     "L": 0.0,
     "Ch": "[\"0\", \"0\", \"0\"]",
     "Qg": "[\"0.0\", \"0.0\", \"0.0\"]",
@@ -982,8 +1059,8 @@
     "name": 3,
     "N1": 10,
     "N2": 14,
-    "Section": 4,
     "Release": 1,
+    "Section": 4,
     "L": 0.0,
     "Ch": "[\"0\", \"0\", \"0\"]",
     "Qg": "[\"0.0\", \"0.0\", \"0.0\"]",
@@ -1007,8 +1084,8 @@
     "name": 4,
     "N1": 14,
     "N2": 11,
-    "Section": 4,
     "Release": 1,
+    "Section": 4,
     "L": 0.0,
     "Ch": "[\"0\", \"0\", \"0\"]",
     "Qg": "[\"0.0\", \"0.0\", \"0.0\"]",
@@ -1032,8 +1109,8 @@
     "name": 5,
     "N1": 11,
     "N2": 15,
-    "Section": 4,
     "Release": 1,
+    "Section": 4,
     "L": 0.0,
     "Ch": "[\"0\", \"0\", \"0\"]",
     "Qg": "[\"0.0\", \"0.0\", \"0.0\"]",
@@ -1057,8 +1134,8 @@
     "name": 6,
     "N1": 15,
     "N2": 12,
-    "Section": 4,
     "Release": 1,
+    "Section": 4,
     "L": 0.0,
     "Ch": "[\"0\", \"0\", \"0\"]",
     "Qg": "[\"0.0\", \"0.0\", \"0.0\"]",
@@ -1082,8 +1159,8 @@
     "name": 1,
     "N1": 16,
     "N2": 17,
-    "Section": 5,
     "Release": 1,
+    "Section": 5,
     "L": 0.0,
     "Ch": "[\"0\", \"0\", \"0\"]",
     "Qg": "[\"0.0\", \"0.0\", \"0.0\"]",
@@ -1107,8 +1184,8 @@
     "name": 2,
     "N1": 17,
     "N2": 18,
-    "Section": 5,
     "Release": 2,
+    "Section": 5,
     "L": 0.0,
     "Ch": "[\"0\", \"0\", \"0\"]",
     "Qg": "[\"0.0\", \"0.0\", \"0.0\"]",
@@ -1132,8 +1209,8 @@
     "name": 3,
     "N1": 18,
     "N2": 19,
-    "Section": 5,
     "Release": 3,
+    "Section": 5,
     "L": 0.0,
     "Ch": "[\"0\", \"0\", \"0\"]",
     "Qg": "[\"0.0\", \"0.0\", \"0.0\"]",
@@ -1157,8 +1234,8 @@
     "name": 4,
     "N1": 19,
     "N2": 20,
-    "Section": 5,
     "Release": 1,
+    "Section": 5,
     "L": 0.0,
     "Ch": "[\"0\", \"0\", \"0\"]",
     "Qg": "[\"0.0\", \"0.0\", \"0.0\"]",
@@ -1171,83 +1248,6 @@
     "EFm": "[\"0;0\", \"0;0\", \"0;0\"]",
     "DPm": "[\"0;0\", \"0;0\", \"0;0\"]",
     "Sm": "[\"0;0\", \"0;0\"]"
-  }
-},
-{
-  "model": "RDM.pl",
-  "pk": 1,
-  "fields": {
-    "modified_date": "2020-01-14T21:24:25.275Z",
-    "project": 3,
-    "name": "Q",
-    "FX": 0.0,
-    "FZ": -0.018,
-    "CY": 0.0,
-    "nodes": [
-      3
-    ]
-  }
-},
-{
-  "model": "RDM.pl",
-  "pk": 2,
-  "fields": {
-    "modified_date": "2020-01-14T21:24:25.307Z",
-    "project": 3,
-    "name": "P",
-    "FX": 0.0,
-    "FZ": -0.036,
-    "CY": 0.0,
-    "nodes": [
-      4,
-      5
-    ]
-  }
-},
-{
-  "model": "RDM.pl",
-  "pk": 3,
-  "fields": {
-    "modified_date": "2020-01-14T21:24:25.808Z",
-    "project": 4,
-    "name": "P",
-    "FX": 0.0,
-    "FZ": -0.02,
-    "CY": 0.0,
-    "nodes": [
-      13,
-      14
-    ]
-  }
-},
-{
-  "model": "RDM.pl",
-  "pk": 4,
-  "fields": {
-    "modified_date": "2020-01-14T21:24:25.829Z",
-    "project": 4,
-    "name": "Q",
-    "FX": -0.01,
-    "FZ": 0.0,
-    "CY": 0.0,
-    "nodes": [
-      15
-    ]
-  }
-},
-{
-  "model": "RDM.pl",
-  "pk": 5,
-  "fields": {
-    "modified_date": "2020-01-14T21:24:26.218Z",
-    "project": 5,
-    "name": "P",
-    "FX": 0.04,
-    "FZ": 0.0,
-    "CY": 0.0,
-    "nodes": [
-      17
-    ]
   }
 },
 {
