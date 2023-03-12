@@ -1,5 +1,9 @@
 FROM python:3.7
 RUN mkdir  /server
+# Install git
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y git
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
