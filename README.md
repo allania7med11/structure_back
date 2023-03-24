@@ -1,4 +1,4 @@
-# The Back end for Structure Analysis Software...
+# The Back end for Structure Analysis Software
 
 ## Contributors
 - Allani Ahmed <allania7med11@gmail.com>
