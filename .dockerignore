@@ -14,3 +14,4 @@ build/
 htmlcov
 notes
 structure_back_static
+.env
