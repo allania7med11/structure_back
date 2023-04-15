@@ -12,10 +12,10 @@
         "program": "${workspaceFolder}/manage.py",
         "args": [
           "runserver",
-          "7000"
+          "2010"
         ],
         "django": true,
-        "justMyCode": true
+        "justMyCode": false
       },
       {
         "name": "Structure_Back: Shell",
