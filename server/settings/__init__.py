@@ -26,7 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env(
+SECRET_KEY = env.str(
     "DJANGO_SECRET_KEY",
     default=get_random_secret_key(),
 )
@@ -148,10 +148,10 @@ GRAPHENE_DJANGO_EXTRAS = {
 # https://myaccount.google.com/apppasswords
 # https://accounts.google.com/b/0/DisplayUnlockCaptcha
 # https://myaccount.google.com/lesssecureapps
-EMAIL_HOST = env("EMAIL_HOST", default="")
-EMAIL_PORT = env("EMAIL_PORT", default="")
-EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")
+EMAIL_HOST = env.str("EMAIL_HOST", default="")
+EMAIL_PORT = env.str("EMAIL_PORT", default="")
+EMAIL_HOST_USER = env.str("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD", default="")
 EMAIL_USE_TLS = True
 
 
@@ -163,14 +163,14 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY", default="")
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET", default="")
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env.str("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY", default="")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env.str("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET", default="")
 
-SOCIAL_AUTH_TWITTER_KEY = env("SOCIAL_AUTH_TWITTER_KEY", default="")
-SOCIAL_AUTH_TWITTER_SECRET = env("SOCIAL_AUTH_TWITTER_SECRET", default="")
+SOCIAL_AUTH_TWITTER_KEY = env.str("SOCIAL_AUTH_TWITTER_KEY", default="")
+SOCIAL_AUTH_TWITTER_SECRET = env.str("SOCIAL_AUTH_TWITTER_SECRET", default="")
 
-SOCIAL_AUTH_FACEBOOK_KEY = env("SOCIAL_AUTH_FACEBOOK_KEY", default="")
-SOCIAL_AUTH_FACEBOOK_SECRET = env("SOCIAL_AUTH_FACEBOOK_SECRET", default="")
+SOCIAL_AUTH_FACEBOOK_KEY = env.str("SOCIAL_AUTH_FACEBOOK_KEY", default="")
+SOCIAL_AUTH_FACEBOOK_SECRET = env.str("SOCIAL_AUTH_FACEBOOK_SECRET", default="")
 
 STATIC_URL = "/back_static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "structure_back_static/")
@@ -181,10 +181,10 @@ ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["*"])
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": env("POSTGRES_NAME", default="structure_db"),
-        "USER": env("POSTGRES_USER", default="postgres"),
-        "PASSWORD": env("POSTGRES_PASSWORD", default="postgres"),
-        "HOST": env("POSTGRES_HOST", default="localhost"),
+        "NAME": env.str("POSTGRES_NAME", default="structure_db"),
+        "USER": env.str("POSTGRES_USER", default="postgres"),
+        "PASSWORD": env.str("POSTGRES_PASSWORD", default="postgres"),
+        "HOST": env.str("POSTGRES_HOST", default="localhost"),
         "PORT": 5432,
     }
 }
