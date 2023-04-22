@@ -65,6 +65,27 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # 'social_django.middleware.SocialAuthExceptionMiddleware'
 ]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+}
+
+# django-debug-middleware
+if env.bool("ACTIVATE_DJANGO_DEBUG_MIDDLEWARE", default=False):
+    MIDDLEWARE += ("core.middlewares.debug.DebugMiddleware",)
+
+
+
 ROOT_URLCONF = "server.urls"
 
 
