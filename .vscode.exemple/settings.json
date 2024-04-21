@@ -1,0 +1,14 @@
+
+{
+    "python.pythonPath": "/home/ah/website/structureFull/web/.env/bin/python",
+    "python.linting.pylintArgs": [
+        "--load-plugins=pylint_django",
+        "--errors-only"
+],
+"python.testing.pytestArgs": [
+    "RDM"
+],
+"python.testing.unittestEnabled": false,
+"python.testing.nosetestsEnabled": false,
+"python.testing.pytestEnabled": true
+}

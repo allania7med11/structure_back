@@ -13,3 +13,4 @@ server/settings/local.py
 notes
 venv
 structure_back_static
+.vscode
