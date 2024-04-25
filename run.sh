@@ -10,7 +10,7 @@ if [ "$MIGRATE" = "True" ]; then
 fi
 
 if [ "$COLLECTSTATIC" = "True" ]; then
-    python manage.py collectstatic --noinput
+    python manage.py collectstatic --noinput && echo "Generation completed successfully"
 fi
 
 if [ "$ENVIRONMENT" = "dev" ]; then
