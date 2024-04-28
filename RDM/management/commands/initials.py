@@ -5,6 +5,6 @@ class Command(BaseCommand):
     help = 'load data'
 
     def handle(self, *args, **kwargs):
-        call_command('loaddata', 'json/user.json')
-        call_command('loaddata', 'json/RDM.json')
+        call_command('loaddata', 'RDM/json/user.json')
+        call_command('loaddata', 'RDM/json/RDM.json')
         
